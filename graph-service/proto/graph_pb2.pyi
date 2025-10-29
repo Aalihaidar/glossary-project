@@ -14,6 +14,7 @@ class RelationshipType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     ANTONYM: _ClassVar[RelationshipType]
     IS_A: _ClassVar[RelationshipType]
     CONTAINS: _ClassVar[RelationshipType]
+
 RELATED_TO: RelationshipType
 SYNONYM: RelationshipType
 ANTONYM: RelationshipType
@@ -28,7 +29,12 @@ class Relationship(_message.Message):
     from_term_id: str
     to_term_id: str
     type: RelationshipType
-    def __init__(self, from_term_id: _Optional[str] = ..., to_term_id: _Optional[str] = ..., type: _Optional[_Union[RelationshipType, str]] = ...) -> None: ...
+    def __init__(
+        self,
+        from_term_id: _Optional[str] = ...,
+        to_term_id: _Optional[str] = ...,
+        type: _Optional[_Union[RelationshipType, str]] = ...,
+    ) -> None: ...
 
 class AddRelationshipRequest(_message.Message):
     __slots__ = ("from_term_id", "to_term_id", "type")
@@ -38,7 +44,12 @@ class AddRelationshipRequest(_message.Message):
     from_term_id: str
     to_term_id: str
     type: RelationshipType
-    def __init__(self, from_term_id: _Optional[str] = ..., to_term_id: _Optional[str] = ..., type: _Optional[_Union[RelationshipType, str]] = ...) -> None: ...
+    def __init__(
+        self,
+        from_term_id: _Optional[str] = ...,
+        to_term_id: _Optional[str] = ...,
+        type: _Optional[_Union[RelationshipType, str]] = ...,
+    ) -> None: ...
 
 class AddRelationshipResponse(_message.Message):
     __slots__ = ("message",)
@@ -56,7 +67,9 @@ class GetRelationshipsForTermResponse(_message.Message):
     __slots__ = ("relationships",)
     RELATIONSHIPS_FIELD_NUMBER: _ClassVar[int]
     relationships: _containers.RepeatedCompositeFieldContainer[Relationship]
-    def __init__(self, relationships: _Optional[_Iterable[_Union[Relationship, _Mapping]]] = ...) -> None: ...
+    def __init__(
+        self, relationships: _Optional[_Iterable[_Union[Relationship, _Mapping]]] = ...
+    ) -> None: ...
 
 class DeleteRelationshipRequest(_message.Message):
     __slots__ = ("from_term_id", "to_term_id")
@@ -64,7 +77,9 @@ class DeleteRelationshipRequest(_message.Message):
     TO_TERM_ID_FIELD_NUMBER: _ClassVar[int]
     from_term_id: str
     to_term_id: str
-    def __init__(self, from_term_id: _Optional[str] = ..., to_term_id: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self, from_term_id: _Optional[str] = ..., to_term_id: _Optional[str] = ...
+    ) -> None: ...
 
 class DeleteRelationshipResponse(_message.Message):
     __slots__ = ("message",)

@@ -16,7 +16,12 @@ class Node(_message.Message):
     id: str
     name: str
     definition: str
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., definition: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self,
+        id: _Optional[str] = ...,
+        name: _Optional[str] = ...,
+        definition: _Optional[str] = ...,
+    ) -> None: ...
 
 class Edge(_message.Message):
     __slots__ = ("from_id", "to_id", "label")
@@ -26,7 +31,12 @@ class Edge(_message.Message):
     from_id: str
     to_id: str
     label: str
-    def __init__(self, from_id: _Optional[str] = ..., to_id: _Optional[str] = ..., label: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self,
+        from_id: _Optional[str] = ...,
+        to_id: _Optional[str] = ...,
+        label: _Optional[str] = ...,
+    ) -> None: ...
 
 class GetMindMapForTermRequest(_message.Message):
     __slots__ = ("term_id",)
@@ -40,7 +50,11 @@ class GetMindMapForTermResponse(_message.Message):
     EDGES_FIELD_NUMBER: _ClassVar[int]
     nodes: _containers.RepeatedCompositeFieldContainer[Node]
     edges: _containers.RepeatedCompositeFieldContainer[Edge]
-    def __init__(self, nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ..., edges: _Optional[_Iterable[_Union[Edge, _Mapping]]] = ...) -> None: ...
+    def __init__(
+        self,
+        nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ...,
+        edges: _Optional[_Iterable[_Union[Edge, _Mapping]]] = ...,
+    ) -> None: ...
 
 class AddRelationshipRequest(_message.Message):
     __slots__ = ("from_term_id", "to_term_id", "type")
@@ -50,7 +64,12 @@ class AddRelationshipRequest(_message.Message):
     from_term_id: str
     to_term_id: str
     type: _graph_pb2.RelationshipType
-    def __init__(self, from_term_id: _Optional[str] = ..., to_term_id: _Optional[str] = ..., type: _Optional[_Union[_graph_pb2.RelationshipType, str]] = ...) -> None: ...
+    def __init__(
+        self,
+        from_term_id: _Optional[str] = ...,
+        to_term_id: _Optional[str] = ...,
+        type: _Optional[_Union[_graph_pb2.RelationshipType, str]] = ...,
+    ) -> None: ...
 
 class AddRelationshipResponse(_message.Message):
     __slots__ = ("message",)

@@ -1,18 +1,14 @@
-import uuid
-import logging
-import grpc
-
-# Import generated classes
 import sys
 sys.path.append('proto')
-from proto import glossary_pb2
-from proto import glossary_pb2_grpc
 
-from glossary.database import get_db_connection
+import logging  # noqa: E402
+import uuid  # noqa: E402
+import grpc  # noqa: E402
+from proto import glossary_pb2, glossary_pb2_grpc  # noqa: E402
+from glossary.database import get_db_connection  # noqa: E402
+
 
 class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
-    """Implements the gRPC Glossary Service."""
-
     def __init__(self, db_path):
         self.db_path = db_path
 
@@ -20,11 +16,12 @@ class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
         logging.info(f"AddTerm request received for term: {request.name}")
         conn = get_db_connection(self.db_path)
         term_id = str(uuid.uuid4())
-        
+
         try:
             conn.execute(
-                "INSERT INTO terms (id, name, definition, source_url) VALUES (?, ?, ?, ?)",
-                (term_id, request.name, request.definition, request.source_url)
+                "INSERT INTO terms (id, name, definition, source_url) "
+                "VALUES (?, ?, ?, ?)",
+                (term_id, request.name, request.definition, request.source_url),
             )
             conn.commit()
         except conn.Error as e:
@@ -38,13 +35,15 @@ class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
             id=term_id,
             name=request.name,
             definition=request.definition,
-            source_url=request.source_url
+            source_url=request.source_url,
         )
 
     def GetTerm(self, request, context):
         logging.info(f"GetTerm request received for ID: {request.id}")
         conn = get_db_connection(self.db_path)
-        term_row = conn.execute("SELECT * FROM terms WHERE id = ?", (request.id,)).fetchone()
+        term_row = conn.execute(
+            "SELECT * FROM terms WHERE id = ?", (request.id,)
+        ).fetchone()
         conn.close()
 
         if term_row is None:
@@ -59,20 +58,16 @@ class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
         conn = get_db_connection(self.db_path)
         terms_rows = conn.execute("SELECT * FROM terms").fetchall()
         conn.close()
-        
+
         terms = [glossary_pb2.Term(**row) for row in terms_rows]
         return glossary_pb2.GetAllTermsResponse(terms=terms)
 
     def UpdateTerm(self, request, context):
-        # Implementation for UpdateTerm
-        # ...
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         return glossary_pb2.Term()
 
     def DeleteTerm(self, request, context):
-        # Implementation for DeleteTerm
-        # ...
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         return glossary_pb2.DeleteTermResponse()

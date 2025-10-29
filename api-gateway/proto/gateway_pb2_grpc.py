@@ -6,23 +6,26 @@ import warnings
 import gateway_pb2 as gateway__pb2
 import glossary_pb2 as glossary__pb2
 
-GRPC_GENERATED_VERSION = '1.76.0'
+GRPC_GENERATED_VERSION = "1.76.0"
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
 try:
     from grpc._utilities import first_version_is_lower
-    _version_not_supported = first_version_is_lower(GRPC_VERSION, GRPC_GENERATED_VERSION)
+
+    _version_not_supported = first_version_is_lower(
+        GRPC_VERSION, GRPC_GENERATED_VERSION
+    )
 except ImportError:
     _version_not_supported = True
 
 if _version_not_supported:
     raise RuntimeError(
-        f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in gateway_pb2_grpc.py depends on'
-        + f' grpcio>={GRPC_GENERATED_VERSION}.'
-        + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
-        + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
+        f"The grpc package installed is at version {GRPC_VERSION},"
+        + " but the generated code in gateway_pb2_grpc.py depends on"
+        + f" grpcio>={GRPC_GENERATED_VERSION}."
+        + f" Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}"
+        + f" or downgrade your generated code using grpcio-tools<={GRPC_VERSION}."
     )
 
 
@@ -36,25 +39,29 @@ class GatewayServiceStub(object):
             channel: A grpc.Channel.
         """
         self.GetMindMapForTerm = channel.unary_unary(
-                '/gateway.GatewayService/GetMindMapForTerm',
-                request_serializer=gateway__pb2.GetMindMapForTermRequest.SerializeToString,
-                response_deserializer=gateway__pb2.GetMindMapForTermResponse.FromString,
-                _registered_method=True)
+            "/gateway.GatewayService/GetMindMapForTerm",
+            request_serializer=gateway__pb2.GetMindMapForTermRequest.SerializeToString,
+            response_deserializer=gateway__pb2.GetMindMapForTermResponse.FromString,
+            _registered_method=True,
+        )
         self.AddTerm = channel.unary_unary(
-                '/gateway.GatewayService/AddTerm',
-                request_serializer=glossary__pb2.AddTermRequest.SerializeToString,
-                response_deserializer=glossary__pb2.Term.FromString,
-                _registered_method=True)
+            "/gateway.GatewayService/AddTerm",
+            request_serializer=glossary__pb2.AddTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.Term.FromString,
+            _registered_method=True,
+        )
         self.GetTerm = channel.unary_unary(
-                '/gateway.GatewayService/GetTerm',
-                request_serializer=glossary__pb2.GetTermRequest.SerializeToString,
-                response_deserializer=glossary__pb2.Term.FromString,
-                _registered_method=True)
+            "/gateway.GatewayService/GetTerm",
+            request_serializer=glossary__pb2.GetTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.Term.FromString,
+            _registered_method=True,
+        )
         self.AddRelationship = channel.unary_unary(
-                '/gateway.GatewayService/AddRelationship',
-                request_serializer=gateway__pb2.AddRelationshipRequest.SerializeToString,
-                response_deserializer=gateway__pb2.AddRelationshipResponse.FromString,
-                _registered_method=True)
+            "/gateway.GatewayService/AddRelationship",
+            request_serializer=gateway__pb2.AddRelationshipRequest.SerializeToString,
+            response_deserializer=gateway__pb2.AddRelationshipResponse.FromString,
+            _registered_method=True,
+        )
 
 
 class GatewayServiceServicer(object):
@@ -63,76 +70,79 @@ class GatewayServiceServicer(object):
     def GetMindMapForTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def AddTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GetTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def AddRelationship(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_GatewayServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetMindMapForTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetMindMapForTerm,
-                    request_deserializer=gateway__pb2.GetMindMapForTermRequest.FromString,
-                    response_serializer=gateway__pb2.GetMindMapForTermResponse.SerializeToString,
-            ),
-            'AddTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.AddTerm,
-                    request_deserializer=glossary__pb2.AddTermRequest.FromString,
-                    response_serializer=glossary__pb2.Term.SerializeToString,
-            ),
-            'GetTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTerm,
-                    request_deserializer=glossary__pb2.GetTermRequest.FromString,
-                    response_serializer=glossary__pb2.Term.SerializeToString,
-            ),
-            'AddRelationship': grpc.unary_unary_rpc_method_handler(
-                    servicer.AddRelationship,
-                    request_deserializer=gateway__pb2.AddRelationshipRequest.FromString,
-                    response_serializer=gateway__pb2.AddRelationshipResponse.SerializeToString,
-            ),
+        "GetMindMapForTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.GetMindMapForTerm,
+            request_deserializer=gateway__pb2.GetMindMapForTermRequest.FromString,
+            response_serializer=gateway__pb2.GetMindMapForTermResponse.SerializeToString,
+        ),
+        "AddTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.AddTerm,
+            request_deserializer=glossary__pb2.AddTermRequest.FromString,
+            response_serializer=glossary__pb2.Term.SerializeToString,
+        ),
+        "GetTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.GetTerm,
+            request_deserializer=glossary__pb2.GetTermRequest.FromString,
+            response_serializer=glossary__pb2.Term.SerializeToString,
+        ),
+        "AddRelationship": grpc.unary_unary_rpc_method_handler(
+            servicer.AddRelationship,
+            request_deserializer=gateway__pb2.AddRelationshipRequest.FromString,
+            response_serializer=gateway__pb2.AddRelationshipResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'gateway.GatewayService', rpc_method_handlers)
+        "gateway.GatewayService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('gateway.GatewayService', rpc_method_handlers)
+    server.add_registered_method_handlers("gateway.GatewayService", rpc_method_handlers)
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class GatewayService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetMindMapForTerm(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def GetMindMapForTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/gateway.GatewayService/GetMindMapForTerm',
+            "/gateway.GatewayService/GetMindMapForTerm",
             gateway__pb2.GetMindMapForTermRequest.SerializeToString,
             gateway__pb2.GetMindMapForTermResponse.FromString,
             options,
@@ -143,23 +153,26 @@ class GatewayService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def AddTerm(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def AddTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/gateway.GatewayService/AddTerm',
+            "/gateway.GatewayService/AddTerm",
             glossary__pb2.AddTermRequest.SerializeToString,
             glossary__pb2.Term.FromString,
             options,
@@ -170,23 +183,26 @@ class GatewayService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def GetTerm(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def GetTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/gateway.GatewayService/GetTerm',
+            "/gateway.GatewayService/GetTerm",
             glossary__pb2.GetTermRequest.SerializeToString,
             glossary__pb2.Term.FromString,
             options,
@@ -197,23 +213,26 @@ class GatewayService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def AddRelationship(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def AddRelationship(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/gateway.GatewayService/AddRelationship',
+            "/gateway.GatewayService/AddRelationship",
             gateway__pb2.AddRelationshipRequest.SerializeToString,
             gateway__pb2.AddRelationshipResponse.FromString,
             options,
@@ -224,4 +243,5 @@ class GatewayService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )

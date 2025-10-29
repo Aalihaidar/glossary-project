@@ -5,23 +5,26 @@ import warnings
 
 import glossary_pb2 as glossary__pb2
 
-GRPC_GENERATED_VERSION = '1.76.0'
+GRPC_GENERATED_VERSION = "1.76.0"
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
 try:
     from grpc._utilities import first_version_is_lower
-    _version_not_supported = first_version_is_lower(GRPC_VERSION, GRPC_GENERATED_VERSION)
+
+    _version_not_supported = first_version_is_lower(
+        GRPC_VERSION, GRPC_GENERATED_VERSION
+    )
 except ImportError:
     _version_not_supported = True
 
 if _version_not_supported:
     raise RuntimeError(
-        f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in glossary_pb2_grpc.py depends on'
-        + f' grpcio>={GRPC_GENERATED_VERSION}.'
-        + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
-        + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
+        f"The grpc package installed is at version {GRPC_VERSION},"
+        + " but the generated code in glossary_pb2_grpc.py depends on"
+        + f" grpcio>={GRPC_GENERATED_VERSION}."
+        + f" Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}"
+        + f" or downgrade your generated code using grpcio-tools<={GRPC_VERSION}."
     )
 
 
@@ -35,30 +38,35 @@ class GlossaryServiceStub(object):
             channel: A grpc.Channel.
         """
         self.AddTerm = channel.unary_unary(
-                '/glossary.GlossaryService/AddTerm',
-                request_serializer=glossary__pb2.AddTermRequest.SerializeToString,
-                response_deserializer=glossary__pb2.Term.FromString,
-                _registered_method=True)
+            "/glossary.GlossaryService/AddTerm",
+            request_serializer=glossary__pb2.AddTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.Term.FromString,
+            _registered_method=True,
+        )
         self.GetTerm = channel.unary_unary(
-                '/glossary.GlossaryService/GetTerm',
-                request_serializer=glossary__pb2.GetTermRequest.SerializeToString,
-                response_deserializer=glossary__pb2.Term.FromString,
-                _registered_method=True)
+            "/glossary.GlossaryService/GetTerm",
+            request_serializer=glossary__pb2.GetTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.Term.FromString,
+            _registered_method=True,
+        )
         self.GetAllTerms = channel.unary_unary(
-                '/glossary.GlossaryService/GetAllTerms',
-                request_serializer=glossary__pb2.GetAllTermsRequest.SerializeToString,
-                response_deserializer=glossary__pb2.GetAllTermsResponse.FromString,
-                _registered_method=True)
+            "/glossary.GlossaryService/GetAllTerms",
+            request_serializer=glossary__pb2.GetAllTermsRequest.SerializeToString,
+            response_deserializer=glossary__pb2.GetAllTermsResponse.FromString,
+            _registered_method=True,
+        )
         self.UpdateTerm = channel.unary_unary(
-                '/glossary.GlossaryService/UpdateTerm',
-                request_serializer=glossary__pb2.UpdateTermRequest.SerializeToString,
-                response_deserializer=glossary__pb2.Term.FromString,
-                _registered_method=True)
+            "/glossary.GlossaryService/UpdateTerm",
+            request_serializer=glossary__pb2.UpdateTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.Term.FromString,
+            _registered_method=True,
+        )
         self.DeleteTerm = channel.unary_unary(
-                '/glossary.GlossaryService/DeleteTerm',
-                request_serializer=glossary__pb2.DeleteTermRequest.SerializeToString,
-                response_deserializer=glossary__pb2.DeleteTermResponse.FromString,
-                _registered_method=True)
+            "/glossary.GlossaryService/DeleteTerm",
+            request_serializer=glossary__pb2.DeleteTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.DeleteTermResponse.FromString,
+            _registered_method=True,
+        )
 
 
 class GlossaryServiceServicer(object):
@@ -67,87 +75,92 @@ class GlossaryServiceServicer(object):
     def AddTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GetTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GetAllTerms(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def UpdateTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def DeleteTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_GlossaryServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'AddTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.AddTerm,
-                    request_deserializer=glossary__pb2.AddTermRequest.FromString,
-                    response_serializer=glossary__pb2.Term.SerializeToString,
-            ),
-            'GetTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTerm,
-                    request_deserializer=glossary__pb2.GetTermRequest.FromString,
-                    response_serializer=glossary__pb2.Term.SerializeToString,
-            ),
-            'GetAllTerms': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetAllTerms,
-                    request_deserializer=glossary__pb2.GetAllTermsRequest.FromString,
-                    response_serializer=glossary__pb2.GetAllTermsResponse.SerializeToString,
-            ),
-            'UpdateTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateTerm,
-                    request_deserializer=glossary__pb2.UpdateTermRequest.FromString,
-                    response_serializer=glossary__pb2.Term.SerializeToString,
-            ),
-            'DeleteTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteTerm,
-                    request_deserializer=glossary__pb2.DeleteTermRequest.FromString,
-                    response_serializer=glossary__pb2.DeleteTermResponse.SerializeToString,
-            ),
+        "AddTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.AddTerm,
+            request_deserializer=glossary__pb2.AddTermRequest.FromString,
+            response_serializer=glossary__pb2.Term.SerializeToString,
+        ),
+        "GetTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.GetTerm,
+            request_deserializer=glossary__pb2.GetTermRequest.FromString,
+            response_serializer=glossary__pb2.Term.SerializeToString,
+        ),
+        "GetAllTerms": grpc.unary_unary_rpc_method_handler(
+            servicer.GetAllTerms,
+            request_deserializer=glossary__pb2.GetAllTermsRequest.FromString,
+            response_serializer=glossary__pb2.GetAllTermsResponse.SerializeToString,
+        ),
+        "UpdateTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateTerm,
+            request_deserializer=glossary__pb2.UpdateTermRequest.FromString,
+            response_serializer=glossary__pb2.Term.SerializeToString,
+        ),
+        "DeleteTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteTerm,
+            request_deserializer=glossary__pb2.DeleteTermRequest.FromString,
+            response_serializer=glossary__pb2.DeleteTermResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'glossary.GlossaryService', rpc_method_handlers)
+        "glossary.GlossaryService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('glossary.GlossaryService', rpc_method_handlers)
+    server.add_registered_method_handlers(
+        "glossary.GlossaryService", rpc_method_handlers
+    )
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class GlossaryService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def AddTerm(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def AddTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/glossary.GlossaryService/AddTerm',
+            "/glossary.GlossaryService/AddTerm",
             glossary__pb2.AddTermRequest.SerializeToString,
             glossary__pb2.Term.FromString,
             options,
@@ -158,23 +171,26 @@ class GlossaryService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def GetTerm(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def GetTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/glossary.GlossaryService/GetTerm',
+            "/glossary.GlossaryService/GetTerm",
             glossary__pb2.GetTermRequest.SerializeToString,
             glossary__pb2.Term.FromString,
             options,
@@ -185,23 +201,26 @@ class GlossaryService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def GetAllTerms(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def GetAllTerms(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/glossary.GlossaryService/GetAllTerms',
+            "/glossary.GlossaryService/GetAllTerms",
             glossary__pb2.GetAllTermsRequest.SerializeToString,
             glossary__pb2.GetAllTermsResponse.FromString,
             options,
@@ -212,23 +231,26 @@ class GlossaryService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def UpdateTerm(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def UpdateTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/glossary.GlossaryService/UpdateTerm',
+            "/glossary.GlossaryService/UpdateTerm",
             glossary__pb2.UpdateTermRequest.SerializeToString,
             glossary__pb2.Term.FromString,
             options,
@@ -239,23 +261,26 @@ class GlossaryService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def DeleteTerm(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def DeleteTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/glossary.GlossaryService/DeleteTerm',
+            "/glossary.GlossaryService/DeleteTerm",
             glossary__pb2.DeleteTermRequest.SerializeToString,
             glossary__pb2.DeleteTermResponse.FromString,
             options,
@@ -266,4 +291,5 @@ class GlossaryService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
