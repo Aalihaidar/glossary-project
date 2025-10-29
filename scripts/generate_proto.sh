@@ -3,12 +3,9 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-# Define the base directory for proto files
-PROTO_DIR=./proto
-
 # --- Install Python gRPC Tools ---
 echo "Installing Python gRPC tools..."
-pip install grpcio-tools protobuf-_Type-hints
+pip install grpcio-tools
 
 # --- Generate code for Glossary Service ---
 echo "Generating code for Glossary Service..."
