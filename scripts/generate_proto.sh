@@ -3,9 +3,12 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-# --- Install Python gRPC Tools ---
-echo "Installing Python gRPC tools..."
-pip install grpcio-tools
+# Define the base directory for proto files
+PROTO_DIR="./proto"
+
+# --- Install Python gRPC Tools at a specific, compatible version ---
+echo "Installing pinned version of Python gRPC tools..."
+pip install grpcio==1.60.0 grpcio-tools==1.60.0 protobuf==4.25.3
 
 # --- Generate code for Glossary Service ---
 echo "Generating code for Glossary Service..."
@@ -27,7 +30,6 @@ python -m grpc_tools.protoc \
 
 # --- Generate code for API Gateway ---
 echo "Generating code for API Gateway..."
-# The gateway needs all proto files to understand the types it uses
 python -m grpc_tools.protoc \
     -I${PROTO_DIR} \
     --python_out=./api-gateway \
@@ -38,13 +40,19 @@ python -m grpc_tools.protoc \
 echo "Protobuf code generation complete."
 
 # --- Move generated files into the proto subdirectories ---
-# This makes the import paths cleaner (e.g., from proto import glossary_pb2)
 echo "Organizing generated files..."
 for service in api-gateway glossary-service graph-service; do
+    rm -rf ./${service}/proto/*
+done
+
+for service in api-gateway glossary-service graph-service; do
     mkdir -p ./${service}/proto
-    mv ./${service}/*.py ./${service}/proto/
-    mv ./${service}/*.pyi ./${service}/proto/
-    # Create __init__.py files to make them packages
+    if ls ./${service}/*.py 1> /dev/null 2>&1; then
+        mv ./${service}/*.py ./${service}/proto/
+    fi
+    if ls ./${service}/*.pyi 1> /dev/null 2>&1; then
+        mv ./${service}/*.pyi ./${service}/proto/
+    fi
     touch ./${service}/proto/__init__.py
 done
 

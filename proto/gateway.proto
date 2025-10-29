@@ -5,10 +5,21 @@ package gateway;
 import "glossary.proto";
 import "graph.proto";
 
+// GatewayService is the single public-facing API for the entire system.
+// It acts as a proxy to the downstream microservices.
 service GatewayService {
+  // --- Composite Operations ---
   rpc GetMindMapForTerm(GetMindMapForTermRequest) returns (GetMindMapForTermResponse);
-  rpc AddTerm(glossary.AddTermRequest) returns (glossary.Term);
+
+  // --- Glossary Service Proxies ---
+  // Note: We reuse message types directly from glossary.proto
+  rpc AddTerm(glossary.Term) returns (glossary.Term);
   rpc GetTerm(glossary.GetTermRequest) returns (glossary.Term);
+  rpc GetAllTerms(glossary.GetAllTermsRequest) returns (glossary.GetAllTermsResponse);
+  rpc UpdateTerm(glossary.Term) returns (glossary.Term);
+  rpc DeleteTerm(glossary.DeleteTermRequest) returns (glossary.DeleteTermResponse);
+
+  // --- Graph Service Proxies ---
   rpc AddRelationship(AddRelationshipRequest) returns (AddRelationshipResponse);
 }
 

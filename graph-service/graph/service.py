@@ -1,5 +1,6 @@
 import sys
-sys.path.append('proto')
+
+sys.path.append("proto")
 
 import logging  # noqa: E402
 import grpc  # noqa: E402

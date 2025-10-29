@@ -1,8 +1,14 @@
+I have a python project that I want to apply professionally the task in image.
+Please don’t provide full code examples upfront or suggest code that stays unchanged.
+Instead, tell me which specific part or snippet of my code you need, and I will share it with you.
+Then, you can help me improve or rewrite that part into a complete, professional-quality version.
+this is the structure:
 ```
 glossary-project/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
+├── .flake8
 ├── .gitignore
 ├── README.md
 ├── docker-compose.yml
@@ -15,10 +21,6 @@ glossary-project/
 │   ├── gateway/
 │   │   ├── __init__.py
 │   │   └── server.py
-│   │   └── services/
-│   │       ├── __init__.py
-│   │       ├── glossary_client.py
-│   │       └── graph_client.py
 │   ├── proto/
 │   ├── Dockerfile
 │   ├── requirements.txt
@@ -35,12 +37,15 @@ glossary-project/
 │   └── run.py
 │
 └── graph-service/
-    ├── graph/
-    │   ├── __init__.py
-    │   ├── database.py
-    │   └── service.py
-    ├── proto/
-    ├── Dockerfile
-    ├── requirements.txt
-    └── run.py
+│   ├── graph/
+│   │   ├── __init__.py
+│   │   ├── database.py
+│   │   └── service.py
+│   ├── proto/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── run.py
+│
+└── scripts/
+    └── generate_proto.sh
 ```
