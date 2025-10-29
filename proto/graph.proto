@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package graph;
+
+enum RelationshipType {
+  RELATED_TO = 0;
+  SYNONYM = 1;
+  ANTONYM = 2;
+  IS_A = 3;
+  CONTAINS = 4;
+}
+
+service GraphService {
+  rpc AddRelationship(AddRelationshipRequest) returns (AddRelationshipResponse);
+  rpc GetRelationshipsForTerm(GetRelationshipsForTermRequest) returns (GetRelationshipsForTermResponse);
+  rpc DeleteRelationship(DeleteRelationshipRequest) returns (DeleteRelationshipResponse);
+}
+
+message Relationship {
+  string from_term_id = 1;
+  string to_term_id = 2;
+  RelationshipType type = 3;
+}
+
+message AddRelationshipRequest {
+  string from_term_id = 1;
+  string to_term_id = 2;
+  RelationshipType type = 3;
+}
+
+message AddRelationshipResponse {
+  string message = 1;
+}
+
+message GetRelationshipsForTermRequest {
+  string term_id = 1;
+}
+
+message GetRelationshipsForTermResponse {
+  repeated Relationship relationships = 1;
+}
+
+message DeleteRelationshipRequest {
+  string from_term_id = 1;
+  string to_term_id = 2;
+}
+
+message DeleteRelationshipResponse {
+  string message = 1;
+}

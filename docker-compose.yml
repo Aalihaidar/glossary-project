@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  glossary-service:
+    build:
+      context: ./glossary-service
+    ports:
+      - "50051:50051"
+    volumes:
+      - ./glossary-service/data:/app/data
+    environment:
+      - PORT=50051
+      - DATABASE_PATH=/app/data/glossary.db
+
+  graph-service:
+    build:
+      context: ./graph-service
+    ports:
+      - "50052:50052"
+    volumes:
+      - ./graph-service/data:/app/data
+    environment:
+      - PORT=50052
+      - DATABASE_PATH=/app/data/graph.db
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "50050:50050"
+    depends_on:
+      - glossary-service
+      - graph-service
+    environment:
+      - PORT=50050
+      - GLOSSARY_SERVICE_ADDR=glossary-service:50051
+      - GRAPH_SERVICE_ADDR=graph-service:50052

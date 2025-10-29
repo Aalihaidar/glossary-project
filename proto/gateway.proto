@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package gateway;
+
+import "glossary.proto";
+import "graph.proto";
+
+service GatewayService {
+  rpc GetMindMapForTerm(GetMindMapForTermRequest) returns (GetMindMapForTermResponse);
+  rpc AddTerm(glossary.AddTermRequest) returns (glossary.Term);
+  rpc GetTerm(glossary.GetTermRequest) returns (glossary.Term);
+  rpc AddRelationship(AddRelationshipRequest) returns (AddRelationshipResponse);
+}
+
+message Node {
+  string id = 1;
+  string name = 2;
+  string definition = 3;
+}
+
+message Edge {
+  string from_id = 1;
+  string to_id = 2;
+  string label = 3;
+}
+
+message GetMindMapForTermRequest {
+  string term_id = 1;
+}
+
+message GetMindMapForTermResponse {
+  repeated Node nodes = 1;
+  repeated Edge edges = 2;
+}
+
+message AddRelationshipRequest {
+  string from_term_id = 1;
+  string to_term_id = 2;
+  graph.RelationshipType type = 3;
+}
+
+message AddRelationshipResponse {
+  string message = 1;
+}
