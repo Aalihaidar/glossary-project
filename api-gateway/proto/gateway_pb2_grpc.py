@@ -8,9 +8,7 @@ import graph_pb2 as graph__pb2
 
 
 class GatewayServiceStub(object):
-    """GatewayService is the single public-facing API for the entire system.
-    It acts as a proxy to the downstream microservices and can orchestrate complex calls.
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -18,436 +16,383 @@ class GatewayServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetMindMapForTerm = channel.unary_unary(
-            "/gateway.GatewayService/GetMindMapForTerm",
-            request_serializer=gateway__pb2.GetMindMapForTermRequest.SerializeToString,
-            response_deserializer=gateway__pb2.GetMindMapForTermResponse.FromString,
-        )
-        self.AddTerm = channel.unary_unary(
-            "/gateway.GatewayService/AddTerm",
-            request_serializer=glossary__pb2.AddTermRequest.SerializeToString,
-            response_deserializer=glossary__pb2.Term.FromString,
-        )
         self.GetTerm = channel.unary_unary(
-            "/gateway.GatewayService/GetTerm",
-            request_serializer=glossary__pb2.GetTermRequest.SerializeToString,
-            response_deserializer=glossary__pb2.Term.FromString,
-        )
+                '/gateway.GatewayService/GetTerm',
+                request_serializer=glossary__pb2.GetTermRequest.SerializeToString,
+                response_deserializer=gateway__pb2.TermDetails.FromString,
+                )
+        self.GetTermByName = channel.unary_unary(
+                '/gateway.GatewayService/GetTermByName',
+                request_serializer=glossary__pb2.GetTermByNameRequest.SerializeToString,
+                response_deserializer=gateway__pb2.TermDetails.FromString,
+                )
+        self.SearchTerms = channel.unary_unary(
+                '/gateway.GatewayService/SearchTerms',
+                request_serializer=glossary__pb2.SearchTermsRequest.SerializeToString,
+                response_deserializer=gateway__pb2.SearchTermsResponse.FromString,
+                )
+        self.GetMindMapForTerm = channel.unary_unary(
+                '/gateway.GatewayService/GetMindMapForTerm',
+                request_serializer=gateway__pb2.GetMindMapForTermRequest.SerializeToString,
+                response_deserializer=gateway__pb2.GetMindMapForTermResponse.FromString,
+                )
+        self.AddTerm = channel.unary_unary(
+                '/gateway.GatewayService/AddTerm',
+                request_serializer=glossary__pb2.AddTermRequest.SerializeToString,
+                response_deserializer=glossary__pb2.Term.FromString,
+                )
         self.GetAllTerms = channel.unary_unary(
-            "/gateway.GatewayService/GetAllTerms",
-            request_serializer=glossary__pb2.GetAllTermsRequest.SerializeToString,
-            response_deserializer=glossary__pb2.GetAllTermsResponse.FromString,
-        )
+                '/gateway.GatewayService/GetAllTerms',
+                request_serializer=glossary__pb2.GetAllTermsRequest.SerializeToString,
+                response_deserializer=glossary__pb2.GetAllTermsResponse.FromString,
+                )
         self.UpdateTerm = channel.unary_unary(
-            "/gateway.GatewayService/UpdateTerm",
-            request_serializer=glossary__pb2.UpdateTermRequest.SerializeToString,
-            response_deserializer=glossary__pb2.Term.FromString,
-        )
+                '/gateway.GatewayService/UpdateTerm',
+                request_serializer=glossary__pb2.UpdateTermRequest.SerializeToString,
+                response_deserializer=glossary__pb2.Term.FromString,
+                )
         self.DeleteTerm = channel.unary_unary(
-            "/gateway.GatewayService/DeleteTerm",
-            request_serializer=glossary__pb2.DeleteTermRequest.SerializeToString,
-            response_deserializer=glossary__pb2.DeleteTermResponse.FromString,
-        )
+                '/gateway.GatewayService/DeleteTerm',
+                request_serializer=glossary__pb2.DeleteTermRequest.SerializeToString,
+                response_deserializer=glossary__pb2.DeleteTermResponse.FromString,
+                )
         self.AddRelationship = channel.unary_unary(
-            "/gateway.GatewayService/AddRelationship",
-            request_serializer=gateway__pb2.AddRelationshipRequest.SerializeToString,
-            response_deserializer=gateway__pb2.AddRelationshipResponse.FromString,
-        )
+                '/gateway.GatewayService/AddRelationship',
+                request_serializer=gateway__pb2.AddRelationshipRequest.SerializeToString,
+                response_deserializer=gateway__pb2.AddRelationshipResponse.FromString,
+                )
         self.GetRelationshipsForTerm = channel.unary_unary(
-            "/gateway.GatewayService/GetRelationshipsForTerm",
-            request_serializer=graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
-            response_deserializer=graph__pb2.GetRelationshipsForTermResponse.FromString,
-        )
+                '/gateway.GatewayService/GetRelationshipsForTerm',
+                request_serializer=graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
+                response_deserializer=graph__pb2.GetRelationshipsForTermResponse.FromString,
+                )
         self.DeleteRelationship = channel.unary_unary(
-            "/gateway.GatewayService/DeleteRelationship",
-            request_serializer=graph__pb2.DeleteRelationshipRequest.SerializeToString,
-            response_deserializer=graph__pb2.DeleteRelationshipResponse.FromString,
-        )
+                '/gateway.GatewayService/DeleteRelationship',
+                request_serializer=graph__pb2.DeleteRelationshipRequest.SerializeToString,
+                response_deserializer=graph__pb2.DeleteRelationshipResponse.FromString,
+                )
 
 
 class GatewayServiceServicer(object):
-    """GatewayService is the single public-facing API for the entire system.
-    It acts as a proxy to the downstream microservices and can orchestrate complex calls.
-    """
-
-    def GetMindMapForTerm(self, request, context):
-        """--- Composite Operations ---
-        Orchestrates calls to both Glossary and Graph services to build a mind map.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def AddTerm(self, request, context):
-        """--- Glossary Service Proxies ---
-        These RPCs are direct proxies to the GlossaryService.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+    """Missing associated documentation comment in .proto file."""
 
     def GetTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTermByName(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SearchTerms(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetMindMapForTerm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AddTerm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def GetAllTerms(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def UpdateTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def DeleteTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def AddRelationship(self, request, context):
-        """--- Graph Service Proxies ---
-        These RPCs are direct proxies to the GraphService.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def GetRelationshipsForTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def DeleteRelationship(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_GatewayServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "GetMindMapForTerm": grpc.unary_unary_rpc_method_handler(
-            servicer.GetMindMapForTerm,
-            request_deserializer=gateway__pb2.GetMindMapForTermRequest.FromString,
-            response_serializer=gateway__pb2.GetMindMapForTermResponse.SerializeToString,
-        ),
-        "AddTerm": grpc.unary_unary_rpc_method_handler(
-            servicer.AddTerm,
-            request_deserializer=glossary__pb2.AddTermRequest.FromString,
-            response_serializer=glossary__pb2.Term.SerializeToString,
-        ),
-        "GetTerm": grpc.unary_unary_rpc_method_handler(
-            servicer.GetTerm,
-            request_deserializer=glossary__pb2.GetTermRequest.FromString,
-            response_serializer=glossary__pb2.Term.SerializeToString,
-        ),
-        "GetAllTerms": grpc.unary_unary_rpc_method_handler(
-            servicer.GetAllTerms,
-            request_deserializer=glossary__pb2.GetAllTermsRequest.FromString,
-            response_serializer=glossary__pb2.GetAllTermsResponse.SerializeToString,
-        ),
-        "UpdateTerm": grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateTerm,
-            request_deserializer=glossary__pb2.UpdateTermRequest.FromString,
-            response_serializer=glossary__pb2.Term.SerializeToString,
-        ),
-        "DeleteTerm": grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteTerm,
-            request_deserializer=glossary__pb2.DeleteTermRequest.FromString,
-            response_serializer=glossary__pb2.DeleteTermResponse.SerializeToString,
-        ),
-        "AddRelationship": grpc.unary_unary_rpc_method_handler(
-            servicer.AddRelationship,
-            request_deserializer=gateway__pb2.AddRelationshipRequest.FromString,
-            response_serializer=gateway__pb2.AddRelationshipResponse.SerializeToString,
-        ),
-        "GetRelationshipsForTerm": grpc.unary_unary_rpc_method_handler(
-            servicer.GetRelationshipsForTerm,
-            request_deserializer=graph__pb2.GetRelationshipsForTermRequest.FromString,
-            response_serializer=graph__pb2.GetRelationshipsForTermResponse.SerializeToString,
-        ),
-        "DeleteRelationship": grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteRelationship,
-            request_deserializer=graph__pb2.DeleteRelationshipRequest.FromString,
-            response_serializer=graph__pb2.DeleteRelationshipResponse.SerializeToString,
-        ),
+            'GetTerm': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTerm,
+                    request_deserializer=glossary__pb2.GetTermRequest.FromString,
+                    response_serializer=gateway__pb2.TermDetails.SerializeToString,
+            ),
+            'GetTermByName': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTermByName,
+                    request_deserializer=glossary__pb2.GetTermByNameRequest.FromString,
+                    response_serializer=gateway__pb2.TermDetails.SerializeToString,
+            ),
+            'SearchTerms': grpc.unary_unary_rpc_method_handler(
+                    servicer.SearchTerms,
+                    request_deserializer=glossary__pb2.SearchTermsRequest.FromString,
+                    response_serializer=gateway__pb2.SearchTermsResponse.SerializeToString,
+            ),
+            'GetMindMapForTerm': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetMindMapForTerm,
+                    request_deserializer=gateway__pb2.GetMindMapForTermRequest.FromString,
+                    response_serializer=gateway__pb2.GetMindMapForTermResponse.SerializeToString,
+            ),
+            'AddTerm': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddTerm,
+                    request_deserializer=glossary__pb2.AddTermRequest.FromString,
+                    response_serializer=glossary__pb2.Term.SerializeToString,
+            ),
+            'GetAllTerms': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAllTerms,
+                    request_deserializer=glossary__pb2.GetAllTermsRequest.FromString,
+                    response_serializer=glossary__pb2.GetAllTermsResponse.SerializeToString,
+            ),
+            'UpdateTerm': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateTerm,
+                    request_deserializer=glossary__pb2.UpdateTermRequest.FromString,
+                    response_serializer=glossary__pb2.Term.SerializeToString,
+            ),
+            'DeleteTerm': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTerm,
+                    request_deserializer=glossary__pb2.DeleteTermRequest.FromString,
+                    response_serializer=glossary__pb2.DeleteTermResponse.SerializeToString,
+            ),
+            'AddRelationship': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddRelationship,
+                    request_deserializer=gateway__pb2.AddRelationshipRequest.FromString,
+                    response_serializer=gateway__pb2.AddRelationshipResponse.SerializeToString,
+            ),
+            'GetRelationshipsForTerm': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetRelationshipsForTerm,
+                    request_deserializer=graph__pb2.GetRelationshipsForTermRequest.FromString,
+                    response_serializer=graph__pb2.GetRelationshipsForTermResponse.SerializeToString,
+            ),
+            'DeleteRelationship': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteRelationship,
+                    request_deserializer=graph__pb2.DeleteRelationshipRequest.FromString,
+                    response_serializer=graph__pb2.DeleteRelationshipResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "gateway.GatewayService", rpc_method_handlers
-    )
+            'gateway.GatewayService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
-# This class is part of an EXPERIMENTAL API.
+ # This class is part of an EXPERIMENTAL API.
 class GatewayService(object):
-    """GatewayService is the single public-facing API for the entire system.
-    It acts as a proxy to the downstream microservices and can orchestrate complex calls.
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetMindMapForTerm(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def GetTerm(request,
             target,
-            "/gateway.GatewayService/GetMindMapForTerm",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/GetTerm',
+            glossary__pb2.GetTermRequest.SerializeToString,
+            gateway__pb2.TermDetails.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetTermByName(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/GetTermByName',
+            glossary__pb2.GetTermByNameRequest.SerializeToString,
+            gateway__pb2.TermDetails.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SearchTerms(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/SearchTerms',
+            glossary__pb2.SearchTermsRequest.SerializeToString,
+            gateway__pb2.SearchTermsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetMindMapForTerm(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/GetMindMapForTerm',
             gateway__pb2.GetMindMapForTermRequest.SerializeToString,
             gateway__pb2.GetMindMapForTermResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def AddTerm(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def AddTerm(request,
             target,
-            "/gateway.GatewayService/AddTerm",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/AddTerm',
             glossary__pb2.AddTermRequest.SerializeToString,
             glossary__pb2.Term.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetTerm(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def GetAllTerms(request,
             target,
-            "/gateway.GatewayService/GetTerm",
-            glossary__pb2.GetTermRequest.SerializeToString,
-            glossary__pb2.Term.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
-
-    @staticmethod
-    def GetAllTerms(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            "/gateway.GatewayService/GetAllTerms",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/GetAllTerms',
             glossary__pb2.GetAllTermsRequest.SerializeToString,
             glossary__pb2.GetAllTermsResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def UpdateTerm(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def UpdateTerm(request,
             target,
-            "/gateway.GatewayService/UpdateTerm",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/UpdateTerm',
             glossary__pb2.UpdateTermRequest.SerializeToString,
             glossary__pb2.Term.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def DeleteTerm(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def DeleteTerm(request,
             target,
-            "/gateway.GatewayService/DeleteTerm",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/DeleteTerm',
             glossary__pb2.DeleteTermRequest.SerializeToString,
             glossary__pb2.DeleteTermResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def AddRelationship(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def AddRelationship(request,
             target,
-            "/gateway.GatewayService/AddRelationship",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/AddRelationship',
             gateway__pb2.AddRelationshipRequest.SerializeToString,
             gateway__pb2.AddRelationshipResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetRelationshipsForTerm(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def GetRelationshipsForTerm(request,
             target,
-            "/gateway.GatewayService/GetRelationshipsForTerm",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/GetRelationshipsForTerm',
             graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
             graph__pb2.GetRelationshipsForTermResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def DeleteRelationship(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def DeleteRelationship(request,
             target,
-            "/gateway.GatewayService/DeleteRelationship",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gateway.GatewayService/DeleteRelationship',
             graph__pb2.DeleteRelationshipRequest.SerializeToString,
             graph__pb2.DeleteRelationshipResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

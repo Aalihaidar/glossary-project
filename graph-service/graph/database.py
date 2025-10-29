@@ -3,40 +3,42 @@ import os
 import sqlite3
 
 
-def get_db_connection(db_path):
+def get_db_connection(db_path: str) -> sqlite3.Connection:
     """Establishes a connection to the SQLite database."""
     conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
     return conn
 
 
-def init_db(db_path):
+def init_db(db_path: str):
     """
-    Initializes the database and creates the relationships table if it
-    doesn't exist.
+    Initializes the graph database. It creates the relationships table with a
+    professional composite primary key if it doesn't exist. This function is
+    idempotent and safe to run on every application startup.
+
+    Args:
+        db_path: The file path for the SQLite database.
     """
     db_dir = os.path.dirname(db_path)
     if db_dir:
         os.makedirs(db_dir, exist_ok=True)
 
-    conn = get_db_connection(db_path)
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "SELECT name FROM sqlite_master WHERE " "type='table' AND name='relationships'"
-    )
-    if cursor.fetchone() is None:
-        logging.info("Creating 'relationships' table.")
-        cursor.execute(
-            """
-            CREATE TABLE relationships (
-                from_term_id TEXT NOT NULL,
-                to_term_id TEXT NOT NULL,
-                type INTEGER NOT NULL,
-                PRIMARY KEY (from_term_id, to_term_id)
+    try:
+        with get_db_connection(db_path) as conn:
+            cursor = conn.cursor()
+            logging.info(
+                "Ensuring 'relationships' table exists with the correct schema."
             )
-        """
-        )
-
-    conn.commit()
-    conn.close()
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS relationships (
+                    from_term_id TEXT NOT NULL,
+                    to_term_id TEXT NOT NULL,
+                    type INTEGER NOT NULL,
+                    PRIMARY KEY (from_term_id, to_term_id, type)
+                )
+                """
+            )
+            conn.commit()
+    except sqlite3.Error as e:
+        logging.error(f"Graph database initialization failed: {e}")
+        raise

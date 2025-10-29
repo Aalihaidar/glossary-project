@@ -43,8 +43,6 @@ class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
             The newly created Term object with its generated ID.
         """
         logging.info(f"AddTerm request received for term: '{request.name}'")
-
-        # Input Validation
         if not request.name or not request.definition:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details("Term name and definition cannot be empty.")
@@ -55,24 +53,21 @@ class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
             id=term_id,
             name=request.name,
             definition=request.definition,
-            source_url=request.source_url,
         )
 
         try:
             with get_db_connection(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    "INSERT INTO terms (id, name, definition, source_url) VALUES (?, ?, ?, ?)",
+                    "INSERT INTO terms (id, name, definition) VALUES (?, ?, ?)",
                     (
                         new_term.id,
                         new_term.name,
                         new_term.definition,
-                        new_term.source_url,
                     ),
                 )
                 conn.commit()
         except sqlite3.IntegrityError:
-            # This error is raised if the 'name' field (with UNIQUE constraint) already exists.
             logging.warning(f"Attempted to add a duplicate term: '{request.name}'")
             context.set_code(grpc.StatusCode.ALREADY_EXISTS)
             context.set_details(
@@ -129,6 +124,83 @@ class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
             return glossary_pb2.Term()
 
         return glossary_pb2.Term(**term_row)
+
+    def GetTermByName(
+        self, request: glossary_pb2.GetTermByNameRequest, context
+    ) -> glossary_pb2.Term:
+        """
+        Retrieves a single term by its unique name.
+
+        Args:
+            request: A request containing the `name` of the term to retrieve.
+            context: The gRPC request context.
+
+        Returns:
+            The found Term object.
+        """
+        logging.info(f"GetTermByName request received for name: {request.name}")
+
+        if not request.name:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("Term name cannot be empty.")
+            return glossary_pb2.Term()
+
+        try:
+            with get_db_connection(self.db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                term_row = cursor.execute(
+                    "SELECT * FROM terms WHERE name = ?", (request.name,)
+                ).fetchone()
+        except sqlite3.Error as e:
+            logging.error(f"Database error during GetTermByName: {e}")
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"An internal database error occurred: {e}")
+            return glossary_pb2.Term()
+
+        if term_row is None:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details(f"Term with name '{request.name}' not found.")
+            return glossary_pb2.Term()
+
+        return glossary_pb2.Term(**term_row)
+
+    def SearchTerms(
+        self, request: glossary_pb2.SearchTermsRequest, context
+    ) -> glossary_pb2.GetAllTermsResponse:
+        """
+        Searches for terms where the name partially matches a query string.
+
+        Args:
+            request: A request containing the search query.
+            context: The gRPC request context.
+
+        Returns:
+            A response containing a list of all matching Term objects.
+        """
+        logging.info(f"SearchTerms request received for query: '{request.query}'")
+
+        if not request.query:
+            return glossary_pb2.GetAllTermsResponse()
+
+        search_query = f"%{request.query}%"
+
+        try:
+            with get_db_connection(self.db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                term_rows = cursor.execute(
+                    "SELECT * FROM terms WHERE name LIKE ? ORDER BY name",
+                    (search_query,),
+                ).fetchall()
+        except sqlite3.Error as e:
+            logging.error(f"Database error during SearchTerms: {e}")
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"An internal database error occurred: {e}")
+            return glossary_pb2.GetAllTermsResponse()
+
+        terms = [glossary_pb2.Term(**row) for row in term_rows]
+        return glossary_pb2.GetAllTermsResponse(terms=terms)
 
     def GetAllTerms(
         self, request: glossary_pb2.GetAllTermsRequest, context
@@ -192,14 +264,13 @@ class GlossaryServicer(glossary_pb2_grpc.GlossaryServiceServicer):
                     context.set_details(f"Term with ID '{request.id}' not found.")
                     return glossary_pb2.Term()
 
-                # If it exists, update it
                 cursor.execute(
                     """
                     UPDATE terms
-                    SET name = ?, definition = ?, source_url = ?
+                    SET name = ?, definition = ?
                     WHERE id = ?
                     """,
-                    (request.name, request.definition, request.source_url, request.id),
+                    (request.name, request.definition, request.id),
                 )
                 conn.commit()
         except sqlite3.IntegrityError:
