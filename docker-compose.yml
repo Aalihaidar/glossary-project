@@ -1,4 +1,4 @@
-version: '3.8'
+name: glossary-project
 
 services:
   glossary-service:
@@ -7,7 +7,7 @@ services:
     ports:
       - "50051:50051"
     volumes:
-      - ./glossary-service/data:/app/data
+      - glossary-data:/app/data
     environment:
       - PORT=50051
       - DATABASE_PATH=/app/data/glossary.db
@@ -18,7 +18,7 @@ services:
     ports:
       - "50052:50052"
     volumes:
-      - ./graph-service/data:/app/data
+      - graph-data:/app/data
     environment:
       - PORT=50052
       - DATABASE_PATH=/app/data/graph.db
@@ -35,3 +35,7 @@ services:
       - PORT=50050
       - GLOSSARY_SERVICE_ADDR=glossary-service:50051
       - GRAPH_SERVICE_ADDR=graph-service:50052
+
+volumes:
+  glossary-data:
+  graph-data:
