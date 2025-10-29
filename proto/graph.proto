@@ -2,20 +2,28 @@ syntax = "proto3";
 
 package graph;
 
-enum RelationshipType {
-  RELATED_TO = 0;
-  SYNONYM = 1;
-  ANTONYM = 2;
-  IS_A = 3;
-  CONTAINS = 4;
-}
-
+// The GraphService manages the semantic relationships between glossary terms.
 service GraphService {
+  // Creates a new relationship between two terms.
   rpc AddRelationship(AddRelationshipRequest) returns (AddRelationshipResponse);
+
+  // Retrieves all relationships associated with a given term.
   rpc GetRelationshipsForTerm(GetRelationshipsForTermRequest) returns (GetRelationshipsForTermResponse);
+
+  // Deletes a specific relationship between two terms.
   rpc DeleteRelationship(DeleteRelationshipRequest) returns (DeleteRelationshipResponse);
 }
 
+// Defines the possible types of semantic relationships.
+enum RelationshipType {
+  UNKNOWN = 0;
+  RELATED_TO = 1; // General association
+  IS_A = 2;       // Inheritance or classification (e.g., "Docker IS_A Containerization Platform")
+  CONTAINS = 3;   // Composition (e.g., "A Pod CONTAINS a Container")
+  DEPENDS_ON = 4; // Dependency (e.g., "A Container DEPENDS_ON an Image")
+}
+
+// Represents a single directional link between two terms.
 message Relationship {
   string from_term_id = 1;
   string to_term_id = 2;
@@ -29,7 +37,7 @@ message AddRelationshipRequest {
 }
 
 message AddRelationshipResponse {
-  string message = 1;
+  bool success = 1;
 }
 
 message GetRelationshipsForTermRequest {
@@ -43,8 +51,9 @@ message GetRelationshipsForTermResponse {
 message DeleteRelationshipRequest {
   string from_term_id = 1;
   string to_term_id = 2;
+  RelationshipType type = 3;
 }
 
 message DeleteRelationshipResponse {
-  string message = 1;
+  bool success = 1;
 }

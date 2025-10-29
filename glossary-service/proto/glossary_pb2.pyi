@@ -44,24 +44,6 @@ class AddTermRequest(_message.Message):
         source_url: _Optional[str] = ...,
     ) -> None: ...
 
-class GetTermRequest(_message.Message):
-    __slots__ = ("id",)
-    ID_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    def __init__(self, id: _Optional[str] = ...) -> None: ...
-
-class GetAllTermsRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
-
-class GetAllTermsResponse(_message.Message):
-    __slots__ = ("terms",)
-    TERMS_FIELD_NUMBER: _ClassVar[int]
-    terms: _containers.RepeatedCompositeFieldContainer[Term]
-    def __init__(
-        self, terms: _Optional[_Iterable[_Union[Term, _Mapping]]] = ...
-    ) -> None: ...
-
 class UpdateTermRequest(_message.Message):
     __slots__ = ("id", "name", "definition", "source_url")
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -80,6 +62,24 @@ class UpdateTermRequest(_message.Message):
         source_url: _Optional[str] = ...,
     ) -> None: ...
 
+class GetTermRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    def __init__(self, id: _Optional[str] = ...) -> None: ...
+
+class GetAllTermsRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class GetAllTermsResponse(_message.Message):
+    __slots__ = ("terms",)
+    TERMS_FIELD_NUMBER: _ClassVar[int]
+    terms: _containers.RepeatedCompositeFieldContainer[Term]
+    def __init__(
+        self, terms: _Optional[_Iterable[_Union[Term, _Mapping]]] = ...
+    ) -> None: ...
+
 class DeleteTermRequest(_message.Message):
     __slots__ = ("id",)
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -87,7 +87,7 @@ class DeleteTermRequest(_message.Message):
     def __init__(self, id: _Optional[str] = ...) -> None: ...
 
 class DeleteTermResponse(_message.Message):
-    __slots__ = ("message",)
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    message: str
-    def __init__(self, message: _Optional[str] = ...) -> None: ...
+    __slots__ = ("success",)
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    def __init__(self, success: bool = ...) -> None: ...

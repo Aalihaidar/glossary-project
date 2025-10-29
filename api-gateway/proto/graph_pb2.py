@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x0bgraph.proto\x12\x05graph"_\n\x0cRelationship\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType"i\n\x16\x41\x64\x64RelationshipRequest\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType"*\n\x17\x41\x64\x64RelationshipResponse\x12\x0f\n\x07message\x18\x01 \x01(\t"1\n\x1eGetRelationshipsForTermRequest\x12\x0f\n\x07term_id\x18\x01 \x01(\t"M\n\x1fGetRelationshipsForTermResponse\x12*\n\rrelationships\x18\x01 \x03(\x0b\x32\x13.graph.Relationship"E\n\x19\x44\x65leteRelationshipRequest\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t"-\n\x1a\x44\x65leteRelationshipResponse\x12\x0f\n\x07message\x18\x01 \x01(\t*T\n\x10RelationshipType\x12\x0e\n\nRELATED_TO\x10\x00\x12\x0b\n\x07SYNONYM\x10\x01\x12\x0b\n\x07\x41NTONYM\x10\x02\x12\x08\n\x04IS_A\x10\x03\x12\x0c\n\x08\x43ONTAINS\x10\x04\x32\xa5\x02\n\x0cGraphService\x12P\n\x0f\x41\x64\x64Relationship\x12\x1d.graph.AddRelationshipRequest\x1a\x1e.graph.AddRelationshipResponse\x12h\n\x17GetRelationshipsForTerm\x12%.graph.GetRelationshipsForTermRequest\x1a&.graph.GetRelationshipsForTermResponse\x12Y\n\x12\x44\x65leteRelationship\x12 .graph.DeleteRelationshipRequest\x1a!.graph.DeleteRelationshipResponseb\x06proto3'
+    b'\n\x0bgraph.proto\x12\x05graph"_\n\x0cRelationship\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType"i\n\x16\x41\x64\x64RelationshipRequest\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType"*\n\x17\x41\x64\x64RelationshipResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08"1\n\x1eGetRelationshipsForTermRequest\x12\x0f\n\x07term_id\x18\x01 \x01(\t"M\n\x1fGetRelationshipsForTermResponse\x12*\n\rrelationships\x18\x01 \x03(\x0b\x32\x13.graph.Relationship"l\n\x19\x44\x65leteRelationshipRequest\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType"-\n\x1a\x44\x65leteRelationshipResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08*W\n\x10RelationshipType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0e\n\nRELATED_TO\x10\x01\x12\x08\n\x04IS_A\x10\x02\x12\x0c\n\x08\x43ONTAINS\x10\x03\x12\x0e\n\nDEPENDS_ON\x10\x04\x32\xa5\x02\n\x0cGraphService\x12P\n\x0f\x41\x64\x64Relationship\x12\x1d.graph.AddRelationshipRequest\x1a\x1e.graph.AddRelationshipResponse\x12h\n\x17GetRelationshipsForTerm\x12%.graph.GetRelationshipsForTermRequest\x1a&.graph.GetRelationshipsForTermResponse\x12Y\n\x12\x44\x65leteRelationship\x12 .graph.DeleteRelationshipRequest\x1a!.graph.DeleteRelationshipResponseb\x06proto3'
 )
 
 _globals = globals()
@@ -22,8 +22,8 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "graph_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_RELATIONSHIPTYPE"]._serialized_start = 518
-    _globals["_RELATIONSHIPTYPE"]._serialized_end = 602
+    _globals["_RELATIONSHIPTYPE"]._serialized_start = 557
+    _globals["_RELATIONSHIPTYPE"]._serialized_end = 644
     _globals["_RELATIONSHIP"]._serialized_start = 22
     _globals["_RELATIONSHIP"]._serialized_end = 117
     _globals["_ADDRELATIONSHIPREQUEST"]._serialized_start = 119
@@ -35,9 +35,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_GETRELATIONSHIPSFORTERMRESPONSE"]._serialized_start = 321
     _globals["_GETRELATIONSHIPSFORTERMRESPONSE"]._serialized_end = 398
     _globals["_DELETERELATIONSHIPREQUEST"]._serialized_start = 400
-    _globals["_DELETERELATIONSHIPREQUEST"]._serialized_end = 469
-    _globals["_DELETERELATIONSHIPRESPONSE"]._serialized_start = 471
-    _globals["_DELETERELATIONSHIPRESPONSE"]._serialized_end = 516
-    _globals["_GRAPHSERVICE"]._serialized_start = 605
-    _globals["_GRAPHSERVICE"]._serialized_end = 898
+    _globals["_DELETERELATIONSHIPREQUEST"]._serialized_end = 508
+    _globals["_DELETERELATIONSHIPRESPONSE"]._serialized_start = 510
+    _globals["_DELETERELATIONSHIPRESPONSE"]._serialized_end = 555
+    _globals["_GRAPHSERVICE"]._serialized_start = 647
+    _globals["_GRAPHSERVICE"]._serialized_end = 940
 # @@protoc_insertion_point(module_scope)

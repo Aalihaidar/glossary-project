@@ -14,17 +14,17 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class RelationshipType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
+    UNKNOWN: _ClassVar[RelationshipType]
     RELATED_TO: _ClassVar[RelationshipType]
-    SYNONYM: _ClassVar[RelationshipType]
-    ANTONYM: _ClassVar[RelationshipType]
     IS_A: _ClassVar[RelationshipType]
     CONTAINS: _ClassVar[RelationshipType]
+    DEPENDS_ON: _ClassVar[RelationshipType]
 
+UNKNOWN: RelationshipType
 RELATED_TO: RelationshipType
-SYNONYM: RelationshipType
-ANTONYM: RelationshipType
 IS_A: RelationshipType
 CONTAINS: RelationshipType
+DEPENDS_ON: RelationshipType
 
 class Relationship(_message.Message):
     __slots__ = ("from_term_id", "to_term_id", "type")
@@ -57,10 +57,10 @@ class AddRelationshipRequest(_message.Message):
     ) -> None: ...
 
 class AddRelationshipResponse(_message.Message):
-    __slots__ = ("message",)
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    message: str
-    def __init__(self, message: _Optional[str] = ...) -> None: ...
+    __slots__ = ("success",)
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    def __init__(self, success: bool = ...) -> None: ...
 
 class GetRelationshipsForTermRequest(_message.Message):
     __slots__ = ("term_id",)
@@ -77,17 +77,22 @@ class GetRelationshipsForTermResponse(_message.Message):
     ) -> None: ...
 
 class DeleteRelationshipRequest(_message.Message):
-    __slots__ = ("from_term_id", "to_term_id")
+    __slots__ = ("from_term_id", "to_term_id", "type")
     FROM_TERM_ID_FIELD_NUMBER: _ClassVar[int]
     TO_TERM_ID_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     from_term_id: str
     to_term_id: str
+    type: RelationshipType
     def __init__(
-        self, from_term_id: _Optional[str] = ..., to_term_id: _Optional[str] = ...
+        self,
+        from_term_id: _Optional[str] = ...,
+        to_term_id: _Optional[str] = ...,
+        type: _Optional[_Union[RelationshipType, str]] = ...,
     ) -> None: ...
 
 class DeleteRelationshipResponse(_message.Message):
-    __slots__ = ("message",)
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    message: str
-    def __init__(self, message: _Optional[str] = ...) -> None: ...
+    __slots__ = ("success",)
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    def __init__(self, success: bool = ...) -> None: ...

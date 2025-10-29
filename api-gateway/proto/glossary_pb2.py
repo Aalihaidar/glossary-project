@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x0eglossary.proto\x12\x08glossary"H\n\x04Term\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\x12\x12\n\nsource_url\x18\x04 \x01(\t"F\n\x0e\x41\x64\x64TermRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\ndefinition\x18\x02 \x01(\t\x12\x12\n\nsource_url\x18\x03 \x01(\t"\x1c\n\x0eGetTermRequest\x12\n\n\x02id\x18\x01 \x01(\t"\x14\n\x12GetAllTermsRequest"4\n\x13GetAllTermsResponse\x12\x1d\n\x05terms\x18\x01 \x03(\x0b\x32\x0e.glossary.Term"U\n\x11UpdateTermRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\x12\x12\n\nsource_url\x18\x04 \x01(\t"\x1f\n\x11\x44\x65leteTermRequest\x12\n\n\x02id\x18\x01 \x01(\t"%\n\x12\x44\x65leteTermResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xcb\x02\n\x0fGlossaryService\x12\x33\n\x07\x41\x64\x64Term\x12\x18.glossary.AddTermRequest\x1a\x0e.glossary.Term\x12\x33\n\x07GetTerm\x12\x18.glossary.GetTermRequest\x1a\x0e.glossary.Term\x12J\n\x0bGetAllTerms\x12\x1c.glossary.GetAllTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12\x39\n\nUpdateTerm\x12\x1b.glossary.UpdateTermRequest\x1a\x0e.glossary.Term\x12G\n\nDeleteTerm\x12\x1b.glossary.DeleteTermRequest\x1a\x1c.glossary.DeleteTermResponseb\x06proto3'
+    b'\n\x0eglossary.proto\x12\x08glossary"H\n\x04Term\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\x12\x12\n\nsource_url\x18\x04 \x01(\t"F\n\x0e\x41\x64\x64TermRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\ndefinition\x18\x02 \x01(\t\x12\x12\n\nsource_url\x18\x03 \x01(\t"U\n\x11UpdateTermRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\x12\x12\n\nsource_url\x18\x04 \x01(\t"\x1c\n\x0eGetTermRequest\x12\n\n\x02id\x18\x01 \x01(\t"\x14\n\x12GetAllTermsRequest"4\n\x13GetAllTermsResponse\x12\x1d\n\x05terms\x18\x01 \x03(\x0b\x32\x0e.glossary.Term"\x1f\n\x11\x44\x65leteTermRequest\x12\n\n\x02id\x18\x01 \x01(\t"%\n\x12\x44\x65leteTermResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xcb\x02\n\x0fGlossaryService\x12\x33\n\x07\x41\x64\x64Term\x12\x18.glossary.AddTermRequest\x1a\x0e.glossary.Term\x12\x33\n\x07GetTerm\x12\x18.glossary.GetTermRequest\x1a\x0e.glossary.Term\x12J\n\x0bGetAllTerms\x12\x1c.glossary.GetAllTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12\x39\n\nUpdateTerm\x12\x1b.glossary.UpdateTermRequest\x1a\x0e.glossary.Term\x12G\n\nDeleteTerm\x12\x1b.glossary.DeleteTermRequest\x1a\x1c.glossary.DeleteTermResponseb\x06proto3'
 )
 
 _globals = globals()
@@ -26,14 +26,14 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_TERM"]._serialized_end = 100
     _globals["_ADDTERMREQUEST"]._serialized_start = 102
     _globals["_ADDTERMREQUEST"]._serialized_end = 172
-    _globals["_GETTERMREQUEST"]._serialized_start = 174
-    _globals["_GETTERMREQUEST"]._serialized_end = 202
-    _globals["_GETALLTERMSREQUEST"]._serialized_start = 204
-    _globals["_GETALLTERMSREQUEST"]._serialized_end = 224
-    _globals["_GETALLTERMSRESPONSE"]._serialized_start = 226
-    _globals["_GETALLTERMSRESPONSE"]._serialized_end = 278
-    _globals["_UPDATETERMREQUEST"]._serialized_start = 280
-    _globals["_UPDATETERMREQUEST"]._serialized_end = 365
+    _globals["_UPDATETERMREQUEST"]._serialized_start = 174
+    _globals["_UPDATETERMREQUEST"]._serialized_end = 259
+    _globals["_GETTERMREQUEST"]._serialized_start = 261
+    _globals["_GETTERMREQUEST"]._serialized_end = 289
+    _globals["_GETALLTERMSREQUEST"]._serialized_start = 291
+    _globals["_GETALLTERMSREQUEST"]._serialized_end = 311
+    _globals["_GETALLTERMSRESPONSE"]._serialized_start = 313
+    _globals["_GETALLTERMSRESPONSE"]._serialized_end = 365
     _globals["_DELETETERMREQUEST"]._serialized_start = 367
     _globals["_DELETETERMREQUEST"]._serialized_end = 398
     _globals["_DELETETERMRESPONSE"]._serialized_start = 400

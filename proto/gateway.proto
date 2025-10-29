@@ -6,33 +6,39 @@ import "glossary.proto";
 import "graph.proto";
 
 // GatewayService is the single public-facing API for the entire system.
-// It acts as a proxy to the downstream microservices.
+// It acts as a proxy to the downstream microservices and can orchestrate complex calls.
 service GatewayService {
   // --- Composite Operations ---
+  // Orchestrates calls to both Glossary and Graph services to build a mind map.
   rpc GetMindMapForTerm(GetMindMapForTermRequest) returns (GetMindMapForTermResponse);
 
   // --- Glossary Service Proxies ---
-  // Note: We reuse message types directly from glossary.proto
-  rpc AddTerm(glossary.Term) returns (glossary.Term);
+  // These RPCs are direct proxies to the GlossaryService.
+  rpc AddTerm(glossary.AddTermRequest) returns (glossary.Term);
   rpc GetTerm(glossary.GetTermRequest) returns (glossary.Term);
   rpc GetAllTerms(glossary.GetAllTermsRequest) returns (glossary.GetAllTermsResponse);
-  rpc UpdateTerm(glossary.Term) returns (glossary.Term);
+  rpc UpdateTerm(glossary.UpdateTermRequest) returns (glossary.Term);
   rpc DeleteTerm(glossary.DeleteTermRequest) returns (glossary.DeleteTermResponse);
 
   // --- Graph Service Proxies ---
+  // These RPCs are direct proxies to the GraphService.
   rpc AddRelationship(AddRelationshipRequest) returns (AddRelationshipResponse);
+  rpc GetRelationshipsForTerm(graph.GetRelationshipsForTermRequest) returns (graph.GetRelationshipsForTermResponse);
+  rpc DeleteRelationship(graph.DeleteRelationshipRequest) returns (graph.DeleteRelationshipResponse);
 }
 
+// Represents a node in the visual mind map response.
 message Node {
   string id = 1;
   string name = 2;
   string definition = 3;
 }
 
+// Represents an edge (link) in the visual mind map response.
 message Edge {
   string from_id = 1;
   string to_id = 2;
-  string label = 3;
+  string label = 3; // e.g., "IS_A", "RELATED_TO"
 }
 
 message GetMindMapForTermRequest {
@@ -44,12 +50,14 @@ message GetMindMapForTermResponse {
   repeated Edge edges = 2;
 }
 
+// A specific request message for adding a relationship via the gateway.
 message AddRelationshipRequest {
   string from_term_id = 1;
   string to_term_id = 2;
   graph.RelationshipType type = 3;
 }
 
+// A generic success response for gateway operations.
 message AddRelationshipResponse {
-  string message = 1;
+  bool success = 1;
 }

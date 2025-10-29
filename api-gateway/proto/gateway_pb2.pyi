@@ -77,7 +77,7 @@ class AddRelationshipRequest(_message.Message):
     ) -> None: ...
 
 class AddRelationshipResponse(_message.Message):
-    __slots__ = ("message",)
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    message: str
-    def __init__(self, message: _Optional[str] = ...) -> None: ...
+    __slots__ = ("success",)
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    def __init__(self, success: bool = ...) -> None: ...

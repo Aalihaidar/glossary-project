@@ -4,10 +4,13 @@ import grpc
 
 import gateway_pb2 as gateway__pb2
 import glossary_pb2 as glossary__pb2
+import graph_pb2 as graph__pb2
 
 
 class GatewayServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """GatewayService is the single public-facing API for the entire system.
+    It acts as a proxy to the downstream microservices and can orchestrate complex calls.
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -35,24 +38,50 @@ class GatewayServiceStub(object):
             request_serializer=glossary__pb2.GetAllTermsRequest.SerializeToString,
             response_deserializer=glossary__pb2.GetAllTermsResponse.FromString,
         )
+        self.UpdateTerm = channel.unary_unary(
+            "/gateway.GatewayService/UpdateTerm",
+            request_serializer=glossary__pb2.UpdateTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.Term.FromString,
+        )
+        self.DeleteTerm = channel.unary_unary(
+            "/gateway.GatewayService/DeleteTerm",
+            request_serializer=glossary__pb2.DeleteTermRequest.SerializeToString,
+            response_deserializer=glossary__pb2.DeleteTermResponse.FromString,
+        )
         self.AddRelationship = channel.unary_unary(
             "/gateway.GatewayService/AddRelationship",
             request_serializer=gateway__pb2.AddRelationshipRequest.SerializeToString,
             response_deserializer=gateway__pb2.AddRelationshipResponse.FromString,
         )
+        self.GetRelationshipsForTerm = channel.unary_unary(
+            "/gateway.GatewayService/GetRelationshipsForTerm",
+            request_serializer=graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
+            response_deserializer=graph__pb2.GetRelationshipsForTermResponse.FromString,
+        )
+        self.DeleteRelationship = channel.unary_unary(
+            "/gateway.GatewayService/DeleteRelationship",
+            request_serializer=graph__pb2.DeleteRelationshipRequest.SerializeToString,
+            response_deserializer=graph__pb2.DeleteRelationshipResponse.FromString,
+        )
 
 
 class GatewayServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """GatewayService is the single public-facing API for the entire system.
+    It acts as a proxy to the downstream microservices and can orchestrate complex calls.
+    """
 
     def GetMindMapForTerm(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """--- Composite Operations ---
+        Orchestrates calls to both Glossary and Graph services to build a mind map.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def AddTerm(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """--- Glossary Service Proxies ---
+        These RPCs are direct proxies to the GlossaryService.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -69,7 +98,33 @@ class GatewayServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def UpdateTerm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteTerm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def AddRelationship(self, request, context):
+        """--- Graph Service Proxies ---
+        These RPCs are direct proxies to the GraphService.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetRelationshipsForTerm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteRelationship(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -98,10 +153,30 @@ def add_GatewayServiceServicer_to_server(servicer, server):
             request_deserializer=glossary__pb2.GetAllTermsRequest.FromString,
             response_serializer=glossary__pb2.GetAllTermsResponse.SerializeToString,
         ),
+        "UpdateTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateTerm,
+            request_deserializer=glossary__pb2.UpdateTermRequest.FromString,
+            response_serializer=glossary__pb2.Term.SerializeToString,
+        ),
+        "DeleteTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteTerm,
+            request_deserializer=glossary__pb2.DeleteTermRequest.FromString,
+            response_serializer=glossary__pb2.DeleteTermResponse.SerializeToString,
+        ),
         "AddRelationship": grpc.unary_unary_rpc_method_handler(
             servicer.AddRelationship,
             request_deserializer=gateway__pb2.AddRelationshipRequest.FromString,
             response_serializer=gateway__pb2.AddRelationshipResponse.SerializeToString,
+        ),
+        "GetRelationshipsForTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.GetRelationshipsForTerm,
+            request_deserializer=graph__pb2.GetRelationshipsForTermRequest.FromString,
+            response_serializer=graph__pb2.GetRelationshipsForTermResponse.SerializeToString,
+        ),
+        "DeleteRelationship": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteRelationship,
+            request_deserializer=graph__pb2.DeleteRelationshipRequest.FromString,
+            response_serializer=graph__pb2.DeleteRelationshipResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -112,7 +187,9 @@ def add_GatewayServiceServicer_to_server(servicer, server):
 
 # This class is part of an EXPERIMENTAL API.
 class GatewayService(object):
-    """Missing associated documentation comment in .proto file."""
+    """GatewayService is the single public-facing API for the entire system.
+    It acts as a proxy to the downstream microservices and can orchestrate complex calls.
+    """
 
     @staticmethod
     def GetMindMapForTerm(
@@ -231,6 +308,64 @@ class GatewayService(object):
         )
 
     @staticmethod
+    def UpdateTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/gateway.GatewayService/UpdateTerm",
+            glossary__pb2.UpdateTermRequest.SerializeToString,
+            glossary__pb2.Term.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def DeleteTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/gateway.GatewayService/DeleteTerm",
+            glossary__pb2.DeleteTermRequest.SerializeToString,
+            glossary__pb2.DeleteTermResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
     def AddRelationship(
         request,
         target,
@@ -249,6 +384,64 @@ class GatewayService(object):
             "/gateway.GatewayService/AddRelationship",
             gateway__pb2.AddRelationshipRequest.SerializeToString,
             gateway__pb2.AddRelationshipResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def GetRelationshipsForTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/gateway.GatewayService/GetRelationshipsForTerm",
+            graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
+            graph__pb2.GetRelationshipsForTermResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def DeleteRelationship(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/gateway.GatewayService/DeleteRelationship",
+            graph__pb2.DeleteRelationshipRequest.SerializeToString,
+            graph__pb2.DeleteRelationshipResponse.FromString,
             options,
             channel_credentials,
             insecure,

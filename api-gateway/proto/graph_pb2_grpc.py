@@ -6,7 +6,7 @@ import graph_pb2 as graph__pb2
 
 
 class GraphServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """The GraphService manages the semantic relationships between glossary terms."""
 
     def __init__(self, channel):
         """Constructor.
@@ -32,22 +32,22 @@ class GraphServiceStub(object):
 
 
 class GraphServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """The GraphService manages the semantic relationships between glossary terms."""
 
     def AddRelationship(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Creates a new relationship between two terms."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetRelationshipsForTerm(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Retrieves all relationships associated with a given term."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteRelationship(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Deletes a specific relationship between two terms."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -79,7 +79,7 @@ def add_GraphServiceServicer_to_server(servicer, server):
 
 # This class is part of an EXPERIMENTAL API.
 class GraphService(object):
-    """Missing associated documentation comment in .proto file."""
+    """The GraphService manages the semantic relationships between glossary terms."""
 
     @staticmethod
     def AddRelationship(
