@@ -7,40 +7,41 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
-
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0eglossary.proto\x12\x08glossary\"[\n\x04Term\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\x12%\n\rrelated_terms\x18\x04 \x03(\x0b\x32\x0e.glossary.Term\"2\n\x0e\x41\x64\x64TermRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\ndefinition\x18\x02 \x01(\t\"A\n\x11UpdateTermRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\"\x1c\n\x0eGetTermRequest\x12\n\n\x02id\x18\x01 \x01(\t\"$\n\x14GetTermByNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"#\n\x12SearchTermsRequest\x12\r\n\x05query\x18\x01 \x01(\t\"\x14\n\x12GetAllTermsRequest\"4\n\x13GetAllTermsResponse\x12\x1d\n\x05terms\x18\x01 \x03(\x0b\x32\x0e.glossary.Term\"\x1f\n\x11\x44\x65leteTermRequest\x12\n\n\x02id\x18\x01 \x01(\t\"%\n\x12\x44\x65leteTermResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xd8\x03\n\x0fGlossaryService\x12\x33\n\x07\x41\x64\x64Term\x12\x18.glossary.AddTermRequest\x1a\x0e.glossary.Term\x12\x33\n\x07GetTerm\x12\x18.glossary.GetTermRequest\x1a\x0e.glossary.Term\x12?\n\rGetTermByName\x12\x1e.glossary.GetTermByNameRequest\x1a\x0e.glossary.Term\x12J\n\x0bSearchTerms\x12\x1c.glossary.SearchTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12J\n\x0bGetAllTerms\x12\x1c.glossary.GetAllTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12\x39\n\nUpdateTerm\x12\x1b.glossary.UpdateTermRequest\x1a\x0e.glossary.Term\x12G\n\nDeleteTerm\x12\x1b.glossary.DeleteTermRequest\x1a\x1c.glossary.DeleteTermResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x0eglossary.proto\x12\x08glossary"[\n\x04Term\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\x12%\n\rrelated_terms\x18\x04 \x03(\x0b\x32\x0e.glossary.Term"2\n\x0e\x41\x64\x64TermRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\ndefinition\x18\x02 \x01(\t"A\n\x11UpdateTermRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t"\x1c\n\x0eGetTermRequest\x12\n\n\x02id\x18\x01 \x01(\t"$\n\x14GetTermByNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"#\n\x12SearchTermsRequest\x12\r\n\x05query\x18\x01 \x01(\t"\x14\n\x12GetAllTermsRequest"4\n\x13GetAllTermsResponse\x12\x1d\n\x05terms\x18\x01 \x03(\x0b\x32\x0e.glossary.Term"\x1f\n\x11\x44\x65leteTermRequest\x12\n\n\x02id\x18\x01 \x01(\t"%\n\x12\x44\x65leteTermResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xd8\x03\n\x0fGlossaryService\x12\x33\n\x07\x41\x64\x64Term\x12\x18.glossary.AddTermRequest\x1a\x0e.glossary.Term\x12\x33\n\x07GetTerm\x12\x18.glossary.GetTermRequest\x1a\x0e.glossary.Term\x12?\n\rGetTermByName\x12\x1e.glossary.GetTermByNameRequest\x1a\x0e.glossary.Term\x12J\n\x0bSearchTerms\x12\x1c.glossary.SearchTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12J\n\x0bGetAllTerms\x12\x1c.glossary.GetAllTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12\x39\n\nUpdateTerm\x12\x1b.glossary.UpdateTermRequest\x1a\x0e.glossary.Term\x12G\n\nDeleteTerm\x12\x1b.glossary.DeleteTermRequest\x1a\x1c.glossary.DeleteTermResponseb\x06proto3'
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'glossary_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "glossary_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
-  DESCRIPTOR._options = None
-  _globals['_TERM']._serialized_start=28
-  _globals['_TERM']._serialized_end=119
-  _globals['_ADDTERMREQUEST']._serialized_start=121
-  _globals['_ADDTERMREQUEST']._serialized_end=171
-  _globals['_UPDATETERMREQUEST']._serialized_start=173
-  _globals['_UPDATETERMREQUEST']._serialized_end=238
-  _globals['_GETTERMREQUEST']._serialized_start=240
-  _globals['_GETTERMREQUEST']._serialized_end=268
-  _globals['_GETTERMBYNAMEREQUEST']._serialized_start=270
-  _globals['_GETTERMBYNAMEREQUEST']._serialized_end=306
-  _globals['_SEARCHTERMSREQUEST']._serialized_start=308
-  _globals['_SEARCHTERMSREQUEST']._serialized_end=343
-  _globals['_GETALLTERMSREQUEST']._serialized_start=345
-  _globals['_GETALLTERMSREQUEST']._serialized_end=365
-  _globals['_GETALLTERMSRESPONSE']._serialized_start=367
-  _globals['_GETALLTERMSRESPONSE']._serialized_end=419
-  _globals['_DELETETERMREQUEST']._serialized_start=421
-  _globals['_DELETETERMREQUEST']._serialized_end=452
-  _globals['_DELETETERMRESPONSE']._serialized_start=454
-  _globals['_DELETETERMRESPONSE']._serialized_end=491
-  _globals['_GLOSSARYSERVICE']._serialized_start=494
-  _globals['_GLOSSARYSERVICE']._serialized_end=966
+    DESCRIPTOR._options = None
+    _globals["_TERM"]._serialized_start = 28
+    _globals["_TERM"]._serialized_end = 119
+    _globals["_ADDTERMREQUEST"]._serialized_start = 121
+    _globals["_ADDTERMREQUEST"]._serialized_end = 171
+    _globals["_UPDATETERMREQUEST"]._serialized_start = 173
+    _globals["_UPDATETERMREQUEST"]._serialized_end = 238
+    _globals["_GETTERMREQUEST"]._serialized_start = 240
+    _globals["_GETTERMREQUEST"]._serialized_end = 268
+    _globals["_GETTERMBYNAMEREQUEST"]._serialized_start = 270
+    _globals["_GETTERMBYNAMEREQUEST"]._serialized_end = 306
+    _globals["_SEARCHTERMSREQUEST"]._serialized_start = 308
+    _globals["_SEARCHTERMSREQUEST"]._serialized_end = 343
+    _globals["_GETALLTERMSREQUEST"]._serialized_start = 345
+    _globals["_GETALLTERMSREQUEST"]._serialized_end = 365
+    _globals["_GETALLTERMSRESPONSE"]._serialized_start = 367
+    _globals["_GETALLTERMSRESPONSE"]._serialized_end = 419
+    _globals["_DELETETERMREQUEST"]._serialized_start = 421
+    _globals["_DELETETERMREQUEST"]._serialized_end = 452
+    _globals["_DELETETERMRESPONSE"]._serialized_start = 454
+    _globals["_DELETETERMRESPONSE"]._serialized_end = 491
+    _globals["_GLOSSARYSERVICE"]._serialized_start = 494
+    _globals["_GLOSSARYSERVICE"]._serialized_end = 966
 # @@protoc_insertion_point(module_scope)

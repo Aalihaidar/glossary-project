@@ -53,9 +53,11 @@ SEED_DATA = {
     ],
 }
 
+
 def get_relationship_type_enum(type_str: str) -> graph_pb2.RelationshipType:
     """Maps a relationship string to the corresponding protobuf enum."""
     return getattr(graph_pb2, type_str, graph_pb2.UNKNOWN)
+
 
 def wait_for_service(channel, timeout=10):
     """Waits for the gRPC service to be ready."""
@@ -65,6 +67,7 @@ def wait_for_service(channel, timeout=10):
     except grpc.FutureTimeoutError:
         logging.error(f"Connection to service timed out after {timeout} seconds.")
         raise
+
 
 def run_seeder(gateway_addr: str):
     """
@@ -107,7 +110,9 @@ def run_seeder(gateway_addr: str):
                 rel_type = get_relationship_type_enum(rel_type_str)
 
                 if not all([from_id, to_id]):
-                    logging.warning(f"Skipping relationship due to missing term: {from_name} -> {to_name}")
+                    logging.warning(
+                        f"Skipping relationship due to missing term: {from_name} -> {to_name}"
+                    )
                     continue
 
                 try:
@@ -115,14 +120,22 @@ def run_seeder(gateway_addr: str):
                         from_term_id=from_id, to_term_id=to_id, type=rel_type
                     )
                     stub.AddRelationship(req)
-                    logging.info(f"CREATED relationship: {from_name} -[{rel_type_str}]-> {to_name}")
+                    logging.info(
+                        f"CREATED relationship: {from_name} -[{rel_type_str}]-> {to_name}"
+                    )
                 except grpc.RpcError as e:
                     if e.code() == grpc.StatusCode.ALREADY_EXISTS:
-                        logging.info(f"Relationship {from_name} -> {to_name} already exists. Skipping.")
+                        logging.info(
+                            f"Relationship {from_name} -> {to_name} already exists. Skipping."
+                        )
                     else:
-                        logging.error(f"Failed to create relationship {from_name} -> {to_name}: {e.details()}")
+                        logging.error(
+                            f"Failed to create relationship {from_name} -> {to_name}: {e.details()}"
+                        )
 
             logging.info("\n--- Seeding complete! ---")
 
     except Exception as e:
-        logging.error(f"An error occurred during the seeding process: {e}", exc_info=True)
+        logging.error(
+            f"An error occurred during the seeding process: {e}", exc_info=True
+        )
