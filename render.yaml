@@ -12,20 +12,18 @@ services:
     envVars:
       - key: PORT
         value: 10000
+      # --- KEY CHANGE ---
+      # We no longer use 'fromService' because we need to specify the internal port.
+      # Render's DNS will resolve 'glossary-service' to the right container,
+      # and we connect to our custom gRPC port.
       - key: GLOSSARY_SERVICE_ADDR
-        fromService:
-          type: web
-          name: glossary-service
-          property: hostport
+        value: "glossary-service:50051"
       - key: GRAPH_SERVICE_ADDR
-        fromService:
-          type: web
-          name: graph-service
-          property: hostport
+        value: "graph-service:50052"
       - key: PYTHONUNBUFFERED
         value: 1
 
-  # ----------------- Glossary Service (NOW A Web Service) -----------------
+  # ----------------- Glossary Service (Web Service) -----------------
   - type: web
     name: glossary-service
     plan: free
@@ -34,13 +32,13 @@ services:
     healthCheckPath: /healthz
     envVars:
       - key: PORT
-        value: 10000
+        value: 10000 # This port is used by Render's load balancer and is IGNORED by our gRPC code
       - key: DATABASE_PATH
         value: /tmp/glossary.db
       - key: PYTHONUNBUFFERED
         value: 1
 
-  # ----------------- Graph Service (NOW A Web Service) -----------------
+  # ----------------- Graph Service (Web Service) -----------------
   - type: web
     name: graph-service
     plan: free
@@ -49,7 +47,7 @@ services:
     healthCheckPath: /healthz
     envVars:
       - key: PORT
-        value: 10000
+        value: 10000 # This port is used by Render's load balancer and is IGNORED by our gRPC code
       - key: DATABASE_PATH
         value: /tmp/graph.db
       - key: PYTHONUNBUFFERED

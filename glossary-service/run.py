@@ -13,7 +13,7 @@ from glossary.database import init_db  # noqa: E402
 from proto.glossary_pb2_grpc import add_GlossaryServiceServicer_to_server  # noqa: E402
 
 
-# --- Health Check Handler ---
+# --- Health Check Handler (Stays the same) ---
 class HealthCheckHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/healthz":
@@ -26,13 +26,14 @@ class HealthCheckHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
     def log_message(self, format, *args):
+        # Suppress logging for health checks
         return
 
 
 def start_health_check_server(port=8080):
     """Runs a simple HTTP server in a background thread for health checks."""
-    # DO NOT use a 'with' statement here, as it will close the server
-    # when the function returns.
+    # This server must keep running for Render's health checks to pass.
+    # It does not use a 'with' statement.
     httpd = HTTPServer(("", port), HealthCheckHandler)
     thread = threading.Thread(target=httpd.serve_forever)
     thread.daemon = True
@@ -44,20 +45,26 @@ def start_health_check_server(port=8080):
 
 
 def serve():
-    """Starts the gRPC server and health check server."""
+    """Starts the gRPC server on a dedicated internal port and the health check server."""
+    # Start the mandatory health check server in the background.
     start_health_check_server()
 
-    port = os.environ.get("PORT", "50051")
-    db_path = os.environ.get("DATABASE_PATH", "/tmp/glossary.db")  # Corrected path
+    # --- KEY CHANGE ---
+    # We IGNORE the 'PORT' env var from Render for our gRPC server.
+    # We use a dedicated internal port for service-to-service communication.
+    grpc_port = "50051"
+    db_path = os.environ.get("DATABASE_PATH", "/tmp/glossary.db")
 
     init_db(db_path)
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     add_GlossaryServiceServicer_to_server(GlossaryServicer(db_path), server)
 
-    server.add_insecure_port(f"[::]:{port}")
+    server.add_insecure_port(f"[::]:{grpc_port}")
     server.start()
-    logging.info(f"Glossary Service gRPC server started on port {port}")
+    logging.info(f"Glossary Service gRPC server started on internal port {grpc_port}")
+
+    # Keep the main thread alive for the gRPC server
     server.wait_for_termination()
 
 
