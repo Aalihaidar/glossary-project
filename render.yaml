@@ -1,0 +1,55 @@
+version: "1"
+
+preBuildCommand: "pip install grpcio==1.60.0 grpcio-tools==1.60.0 protobuf==4.25.3 && ./scripts/generate_proto.sh"
+
+services:
+  # ----------------- API Gateway (Public Web Service) -----------------
+  - type: web
+    name: api-gateway
+    plan: free
+    runtime: docker
+    dockerfilePath: ./api-gateway/Dockerfile
+    healthCheckPath: /healthz
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: GLOSSARY_SERVICE_ADDR
+        fromService:
+          type: pserv
+          name: glossary-service
+          property: hostport
+      - key: GRAPH_SERVICE_ADDR
+        fromService:
+          type: pserv
+          name: graph-service
+          property: hostport
+      - key: PYTHONUNBUFFERED
+        value: 1
+
+  # ----------------- Glossary Service (Private Service) -----------------
+  - type: pserv
+    name: glossary-service
+    plan: free
+    runtime: docker
+    dockerfilePath: ./glossary-service/Dockerfile
+    envVars:
+      - key: PORT
+        value: 50051
+      - key: DATABASE_PATH
+        value: /tmp/glossary.db
+      - key: PYTHONUNBUFFERED
+        value: 1
+
+  # ----------------- Graph Service (Private Service) -----------------
+  - type: pserv
+    name: graph-service
+    plan: free
+    runtime: docker
+    dockerfilePath: ./graph-service/Dockerfile
+    envVars:
+      - key: PORT
+        value: 50052
+      - key: DATABASE_PATH
+        value: /tmp/graph.db
+      - key: PYTHONUNBUFFERED
+        value: 1

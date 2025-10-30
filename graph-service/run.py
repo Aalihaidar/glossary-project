@@ -3,7 +3,6 @@ import logging
 from concurrent import futures
 import grpc
 
-# Add the proto path to the system path first
 import sys
 
 sys.path.append("proto")
