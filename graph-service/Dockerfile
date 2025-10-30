@@ -3,8 +3,8 @@ FROM python:3.11-slim as builder
 
 WORKDIR /app
 
-# Copy only the requirements file
-COPY requirements.txt .
+# Copy only the requirements file from its specific directory
+COPY graph-service/requirements.txt .
 
 # Install dependencies.
 RUN pip install --no-cache-dir -r requirements.txt
@@ -19,11 +19,11 @@ WORKDIR /app
 # Copy the installed dependencies from the builder stage
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 
-# Copy all the application code from the build context into the container
-COPY . /app/
+# Copy all the application code from the service's directory into the container
+COPY graph-service/ /app/
 
-# The port will be set by docker-compose, but it's good practice to document it
-EXPOSE 50050
+# The port will be set by Render's PORT environment variable
+EXPOSE 10000
 
 # The command to run when the container starts
 CMD ["python", "run.py"]
