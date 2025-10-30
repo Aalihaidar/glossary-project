@@ -1,15 +1,16 @@
 import logging
+import time
 from typing import Dict
 
 import grpc
-from proto import (  # Corrected imports
+from proto import (
     gateway_pb2,
     gateway_pb2_grpc,
-    glossary_pb2,  # Added direct import for glossary messages
+    glossary_pb2,
     graph_pb2,
 )
 
-# Rich Professional Data Set
+# The SEED_DATA dictionary remains the same.
 SEED_DATA = {
     "terms": [
         {
@@ -59,83 +60,104 @@ def get_relationship_type_enum(type_str: str) -> graph_pb2.RelationshipType:
     return getattr(graph_pb2, type_str, graph_pb2.UNKNOWN)
 
 
-def wait_for_service(channel, timeout=10):
-    """Waits for the gRPC service to be ready."""
-    try:
-        grpc.channel_ready_future(channel).result(timeout=timeout)
-        logging.info("Successfully connected to the gRPC service.")
-    except grpc.FutureTimeoutError:
-        logging.error(f"Connection to service timed out after {timeout} seconds.")
-        raise
-
-
 def run_seeder(gateway_addr: str):
     """
-    Connects to the gateway and seeds the database with terms and relationships.
-    This function is idempotent and safe to run on every startup.
+    Connects to the gateway and seeds the database.
+    This function includes a robust retry mechanism to handle startup race
+    conditions where downstream services may not be immediately available.
     """
     logging.info("--- Starting Database Seeder ---")
-    try:
-        with grpc.insecure_channel(gateway_addr) as channel:
-            wait_for_service(channel)
-            stub = gateway_pb2_grpc.GatewayServiceStub(channel)
-            term_map: Dict[str, str] = {}  # Cache for term name -> term ID
 
-            logging.info("--- Seeding Terms ---")
-            for term_data in SEED_DATA["terms"]:
-                name = term_data["name"]
-                try:
-                    # CORRECTED: Use glossary_pb2 directly
-                    req = glossary_pb2.AddTermRequest(
-                        name=name, definition=term_data["definition"]
-                    )
-                    new_term = stub.AddTerm(req)
-                    logging.info(f"CREATED term '{name}' with ID {new_term.id}")
-                    term_map[name] = new_term.id
-                except grpc.RpcError as e:
-                    if e.code() == grpc.StatusCode.ALREADY_EXISTS:
-                        logging.info(f"Term '{name}' already exists. Fetching ID.")
-                        # CORRECTED: Use glossary_pb2 directly
-                        req = glossary_pb2.GetTermByNameRequest(name=name)
-                        existing_term = stub.GetTermByName(req)
-                        term_map[name] = existing_term.term.id
-                    else:
-                        logging.error(f"Failed to process term '{name}': {e.details()}")
-                        raise
+    # --- KEY CHANGE: Retry Logic ---
+    # We will try to connect multiple times to give the gateway and its
+    # downstream services time to come online.
+    max_retries = 12
+    retry_delay_seconds = 10
+    attempt = 0
 
-            logging.info("\n--- Seeding Relationships ---")
-            for from_name, to_name, rel_type_str in SEED_DATA["relationships"]:
-                from_id = term_map.get(from_name)
-                to_id = term_map.get(to_name)
-                rel_type = get_relationship_type_enum(rel_type_str)
+    while attempt < max_retries:
+        try:
+            attempt += 1
+            logging.info(
+                f"Attempting to connect to gateway at {gateway_addr} "
+                f"(Attempt {attempt}/{max_retries})..."
+            )
 
-                if not all([from_id, to_id]):
-                    logging.warning(
-                        f"Skipping relationship due to missing term: {from_name} -> {to_name}"
-                    )
-                    continue
+            # Establish the channel within the loop
+            with grpc.insecure_channel(gateway_addr) as channel:
+                # Wait for the channel to be ready, with a short timeout.
+                # If this fails, it will raise an exception and trigger the retry.
+                grpc.channel_ready_future(channel).result(timeout=5)
+                logging.info("Successfully connected to the gRPC service.")
 
-                try:
-                    req = gateway_pb2.AddRelationshipRequest(
-                        from_term_id=from_id, to_term_id=to_id, type=rel_type
-                    )
-                    stub.AddRelationship(req)
-                    logging.info(
-                        f"CREATED relationship: {from_name} -[{rel_type_str}]-> {to_name}"
-                    )
-                except grpc.RpcError as e:
-                    if e.code() == grpc.StatusCode.ALREADY_EXISTS:
+                stub = gateway_pb2_grpc.GatewayServiceStub(channel)
+                term_map: Dict[str, str] = {}  # Cache for term name -> term ID
+
+                logging.info("--- Seeding Terms ---")
+                for term_data in SEED_DATA["terms"]:
+                    name = term_data["name"]
+                    try:
+                        req = glossary_pb2.AddTermRequest(
+                            name=name, definition=term_data["definition"]
+                        )
+                        new_term = stub.AddTerm(req)
+                        logging.info(f"CREATED term '{name}' with ID {new_term.id}")
+                        term_map[name] = new_term.id
+                    except grpc.RpcError as e:
+                        if e.code() == grpc.StatusCode.ALREADY_EXISTS:
+                            logging.info(f"Term '{name}' already exists. Fetching ID.")
+                            req = glossary_pb2.GetTermByNameRequest(name=name)
+                            existing_term = stub.GetTermByName(req)
+                            term_map[name] = existing_term.term.id
+                        else:
+                            # Re-raise other gRPC errors to be caught by the outer loop
+                            raise
+
+                logging.info("\n--- Seeding Relationships ---")
+                for from_name, to_name, rel_type_str in SEED_DATA["relationships"]:
+                    from_id, to_id = term_map.get(from_name), term_map.get(to_name)
+                    rel_type = get_relationship_type_enum(rel_type_str)
+
+                    if not all([from_id, to_id]):
+                        continue
+
+                    try:
+                        req = gateway_pb2.AddRelationshipRequest(
+                            from_term_id=from_id, to_term_id=to_id, type=rel_type
+                        )
+                        stub.AddRelationship(req)
                         logging.info(
-                            f"Relationship {from_name} -> {to_name} already exists. Skipping."
+                            f"CREATED relationship: {from_name} -[{rel_type_str}]-> {to_name}"
                         )
-                    else:
-                        logging.error(
-                            f"Failed to create relationship {from_name} -> {to_name}: {e.details()}"
-                        )
+                    except grpc.RpcError as e:
+                        if e.code() == grpc.StatusCode.ALREADY_EXISTS:
+                            logging.info(
+                                f"Relationship {from_name} -> {to_name} already exists. Skipping."
+                            )
+                        else:
+                            # Re-raise other gRPC errors
+                            raise
 
-            logging.info("\n--- Seeding complete! ---")
+                logging.info("\n--- Seeding process completed successfully! ---")
+                return  # Exit the function successfully
 
-    except Exception as e:
-        logging.error(
-            f"An error occurred during the seeding process: {e}", exc_info=True
-        )
+        except (grpc.FutureTimeoutError, grpc.RpcError) as e:
+            # This block catches connection failures (UNAVAILABLE) or timeouts.
+            code = e.code() if isinstance(e, grpc.RpcError) else "Timeout"
+            logging.warning(
+                f"Seeder connection failed (Code: {code}). "
+                f"Gateway or downstream service may not be ready."
+            )
+            if attempt < max_retries:
+                logging.info(f"Retrying in {retry_delay_seconds} seconds...")
+                time.sleep(retry_delay_seconds)
+            else:
+                logging.error(
+                    "Seeding failed after multiple retries. Aborting.", exc_info=True
+                )
+                # Exit with an error status if you want to fail the deployment
+                # For this tutorial, we will let it continue.
+
+    logging.error(
+        "--- Seeding failed. The seeder was unable to connect to the gateway. ---"
+    )
