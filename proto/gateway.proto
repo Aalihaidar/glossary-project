@@ -19,9 +19,17 @@ service GatewayService {
   rpc DeleteRelationship(graph.DeleteRelationshipRequest) returns (graph.DeleteRelationshipResponse);
 }
 
+message RelationshipDetails {
+  string from_term_id = 1;
+  string to_term_id = 2;
+  graph.RelationshipType type = 3;
+  string from_term_name = 4;
+  string to_term_name = 5;
+}
+
 message TermDetails {
   glossary.Term term = 1;
-  repeated graph.Relationship relationships = 2;
+  repeated RelationshipDetails relationships = 2;
 }
 
 message SearchTermsResponse {
@@ -57,4 +65,14 @@ message AddRelationshipRequest {
 
 message AddRelationshipResponse {
   bool success = 1;
+}
+
+message DeleteRelationshipRequest {
+    string from_term_id = 1;
+    string to_term_id = 2;
+    graph.RelationshipType type = 3;
+}
+
+message DeleteRelationshipResponse {
+    bool success = 1;
 }

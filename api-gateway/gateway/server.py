@@ -7,6 +7,7 @@ complex queries that require data from multiple downstream microservices.
 """
 
 import logging
+from typing import Dict, Set
 import grpc
 from proto import (
     gateway_pb2,
@@ -23,6 +24,7 @@ def handle_rpc_error(e: grpc.RpcError, context):
     logging.error(f"Downstream RPC failed: {e.code()} - {e.details()}")
     context.set_code(e.code())
     context.set_details(e.details())
+    return None
 
 
 class GatewayServer(gateway_pb2_grpc.GatewayServiceServicer):
@@ -46,35 +48,87 @@ class GatewayServer(gateway_pb2_grpc.GatewayServiceServicer):
         self.graph_stub = graph_pb2_grpc.GraphServiceStub(self.graph_channel)
         logging.info("API Gateway initialized and connected to downstream services.")
 
+    def _get_term_lookup(self, term_ids: Set[str]) -> Dict[str, glossary_pb2.Term]:
+        """
+        Fetches term data for a set of IDs and returns a lookup map.
+
+        NOTE: This implementation uses a loop of individual GetTerm calls, which can
+        lead to performance issues (the N+1 query problem). A professional-grade
+        optimization would be to add a `GetTermsByIds` batch RPC to the Glossary service.
+
+        Args:
+            term_ids: A set of term IDs to fetch.
+
+        Returns:
+            A dictionary mapping term IDs to Term objects.
+        """
+        term_lookup = {}
+        for term_id in term_ids:
+            try:
+                term = self.glossary_stub.GetTerm(
+                    glossary_pb2.GetTermRequest(id=term_id)
+                )
+                term_lookup[term_id] = term
+            except grpc.RpcError as e:
+                logging.warning(
+                    f"Could not fetch details for term ID {term_id}: {e.details()}"
+                )
+        return term_lookup
+
     def _get_term_details(self, term: glossary_pb2.Term) -> gateway_pb2.TermDetails:
         """
-        Helper function to enrich a Term object with its relationships.
+        Helper function to enrich a Term object with detailed relationships.
 
-        This is a core orchestration component, calling the graph service to
-        fetch related data for a given term from the glossary service.
+        This is a core orchestration component. It fetches relationship IDs from
+        the graph service, then fetches the names for those IDs from the glossary
+        service, and finally assembles an enriched response.
 
         Args:
             term: A Term object from the glossary service.
 
         Returns:
-            An enriched TermDetails object containing both the term and its relationships.
+            An enriched TermDetails object containing the term and its detailed relationships.
         """
         try:
             relationships_res = self.graph_stub.GetRelationshipsForTerm(
                 graph_pb2.GetRelationshipsForTermRequest(term_id=term.id)
             )
+            if not relationships_res.relationships:
+                return gateway_pb2.TermDetails(term=term)
+
+            related_ids = set()
+            for rel in relationships_res.relationships:
+                related_ids.add(rel.from_term_id)
+                related_ids.add(rel.to_term_id)
+
+            term_lookup = self._get_term_lookup(related_ids)
+            if term.id not in term_lookup:
+                term_lookup[term.id] = term
+
+            enriched_relationships = []
+            for rel in relationships_res.relationships:
+                from_term = term_lookup.get(rel.from_term_id)
+                to_term = term_lookup.get(rel.to_term_id)
+
+                if from_term and to_term:
+                    enriched_relationships.append(
+                        gateway_pb2.RelationshipDetails(
+                            from_term_id=rel.from_term_id,
+                            to_term_id=rel.to_term_id,
+                            type=rel.type,
+                            from_term_name=from_term.name,
+                            to_term_name=to_term.name,
+                        )
+                    )
             return gateway_pb2.TermDetails(
-                term=term, relationships=relationships_res.relationships
+                term=term, relationships=enriched_relationships
             )
-        except grpc.RpcError as e:
+        except grpc.RpcError:
             logging.warning(
-                f"Could not fetch relationships for term ID {term.id}: {e.details()}. "
+                f"Could not fetch relationships for term ID {term.id}. "
                 "Returning term data only."
             )
-            # Gracefully handle graph service failure by returning what we have
             return gateway_pb2.TermDetails(term=term)
-
-    # --- Orchestration Methods ---
 
     def GetTerm(
         self, request: glossary_pb2.GetTermRequest, context
@@ -121,34 +175,20 @@ class GatewayServer(gateway_pb2_grpc.GatewayServiceServicer):
         """Orchestrates fetching all data needed to render a visual mind map."""
         logging.info(f"Orchestrating GetMindMapForTerm for ID: {request.term_id}")
         try:
-            # 1. Get the central term
-            central_term = self.glossary_stub.GetTerm(
-                glossary_pb2.GetTermRequest(id=request.term_id)
-            )
-
-            # 2. Get its relationships
             relationships_res = self.graph_stub.GetRelationshipsForTerm(
                 graph_pb2.GetRelationshipsForTermRequest(term_id=request.term_id)
             )
 
-            # 3. Gather all unique neighbor term IDs
-            neighbor_ids = set()
+            all_term_ids = {request.term_id}
             for rel in relationships_res.relationships:
-                neighbor_ids.add(rel.from_term_id)
-                neighbor_ids.add(rel.to_term_id)
-            neighbor_ids.discard(request.term_id)
+                all_term_ids.add(rel.from_term_id)
+                all_term_ids.add(rel.to_term_id)
 
-            # 4. Fetch details for each neighbor
-            neighbor_terms = [
-                self.glossary_stub.GetTerm(glossary_pb2.GetTermRequest(id=neighbor_id))
-                for neighbor_id in neighbor_ids
-            ]
+            term_lookup = self._get_term_lookup(all_term_ids)
 
-            # 5. Assemble the final response
-            all_terms = [central_term] + neighbor_terms
             nodes = [
                 gateway_pb2.Node(id=t.id, name=t.name, definition=t.definition)
-                for t in all_terms
+                for t in term_lookup.values()
             ]
 
             relationship_type_map = {
@@ -167,8 +207,6 @@ class GatewayServer(gateway_pb2_grpc.GatewayServiceServicer):
         except grpc.RpcError as e:
             handle_rpc_error(e, context)
             return gateway_pb2.GetMindMapForTermResponse()
-
-    # --- Simple Proxy Methods ---
 
     def AddTerm(self, request, context):
         logging.info("Proxying AddTerm request to Glossary Service")

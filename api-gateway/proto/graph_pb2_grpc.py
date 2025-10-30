@@ -15,20 +15,20 @@ class GraphServiceStub(object):
             channel: A grpc.Channel.
         """
         self.AddRelationship = channel.unary_unary(
-                '/graph.GraphService/AddRelationship',
-                request_serializer=graph__pb2.AddRelationshipRequest.SerializeToString,
-                response_deserializer=graph__pb2.AddRelationshipResponse.FromString,
-                )
+            "/graph.GraphService/AddRelationship",
+            request_serializer=graph__pb2.AddRelationshipRequest.SerializeToString,
+            response_deserializer=graph__pb2.AddRelationshipResponse.FromString,
+        )
         self.GetRelationshipsForTerm = channel.unary_unary(
-                '/graph.GraphService/GetRelationshipsForTerm',
-                request_serializer=graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
-                response_deserializer=graph__pb2.GetRelationshipsForTermResponse.FromString,
-                )
+            "/graph.GraphService/GetRelationshipsForTerm",
+            request_serializer=graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
+            response_deserializer=graph__pb2.GetRelationshipsForTermResponse.FromString,
+        )
         self.DeleteRelationship = channel.unary_unary(
-                '/graph.GraphService/DeleteRelationship',
-                request_serializer=graph__pb2.DeleteRelationshipRequest.SerializeToString,
-                response_deserializer=graph__pb2.DeleteRelationshipResponse.FromString,
-                )
+            "/graph.GraphService/DeleteRelationship",
+            request_serializer=graph__pb2.DeleteRelationshipRequest.SerializeToString,
+            response_deserializer=graph__pb2.DeleteRelationshipResponse.FromString,
+        )
 
 
 class GraphServiceServicer(object):
@@ -37,96 +37,133 @@ class GraphServiceServicer(object):
     def AddRelationship(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GetRelationshipsForTerm(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def DeleteRelationship(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_GraphServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'AddRelationship': grpc.unary_unary_rpc_method_handler(
-                    servicer.AddRelationship,
-                    request_deserializer=graph__pb2.AddRelationshipRequest.FromString,
-                    response_serializer=graph__pb2.AddRelationshipResponse.SerializeToString,
-            ),
-            'GetRelationshipsForTerm': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetRelationshipsForTerm,
-                    request_deserializer=graph__pb2.GetRelationshipsForTermRequest.FromString,
-                    response_serializer=graph__pb2.GetRelationshipsForTermResponse.SerializeToString,
-            ),
-            'DeleteRelationship': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteRelationship,
-                    request_deserializer=graph__pb2.DeleteRelationshipRequest.FromString,
-                    response_serializer=graph__pb2.DeleteRelationshipResponse.SerializeToString,
-            ),
+        "AddRelationship": grpc.unary_unary_rpc_method_handler(
+            servicer.AddRelationship,
+            request_deserializer=graph__pb2.AddRelationshipRequest.FromString,
+            response_serializer=graph__pb2.AddRelationshipResponse.SerializeToString,
+        ),
+        "GetRelationshipsForTerm": grpc.unary_unary_rpc_method_handler(
+            servicer.GetRelationshipsForTerm,
+            request_deserializer=graph__pb2.GetRelationshipsForTermRequest.FromString,
+            response_serializer=graph__pb2.GetRelationshipsForTermResponse.SerializeToString,
+        ),
+        "DeleteRelationship": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteRelationship,
+            request_deserializer=graph__pb2.DeleteRelationshipRequest.FromString,
+            response_serializer=graph__pb2.DeleteRelationshipResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'graph.GraphService', rpc_method_handlers)
+        "graph.GraphService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class GraphService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def AddRelationship(request,
+    def AddRelationship(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/graph.GraphService/AddRelationship',
+            "/graph.GraphService/AddRelationship",
             graph__pb2.AddRelationshipRequest.SerializeToString,
             graph__pb2.AddRelationshipResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def GetRelationshipsForTerm(request,
+    def GetRelationshipsForTerm(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/graph.GraphService/GetRelationshipsForTerm',
+            "/graph.GraphService/GetRelationshipsForTerm",
             graph__pb2.GetRelationshipsForTermRequest.SerializeToString,
             graph__pb2.GetRelationshipsForTermResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def DeleteRelationship(request,
+    def DeleteRelationship(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/graph.GraphService/DeleteRelationship',
+            "/graph.GraphService/DeleteRelationship",
             graph__pb2.DeleteRelationshipRequest.SerializeToString,
             graph__pb2.DeleteRelationshipResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )

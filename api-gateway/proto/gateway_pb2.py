@@ -7,6 +7,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -16,29 +17,37 @@ import glossary_pb2 as glossary__pb2
 import graph_pb2 as graph__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rgateway.proto\x12\x07gateway\x1a\x0eglossary.proto\x1a\x0bgraph.proto\"W\n\x0bTermDetails\x12\x1c\n\x04term\x18\x01 \x01(\x0b\x32\x0e.glossary.Term\x12*\n\rrelationships\x18\x02 \x03(\x0b\x32\x13.graph.Relationship\"<\n\x13SearchTermsResponse\x12%\n\x07results\x18\x01 \x03(\x0b\x32\x14.gateway.TermDetails\"4\n\x04Node\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t\"5\n\x04\x45\x64ge\x12\x0f\n\x07\x66rom_id\x18\x01 \x01(\t\x12\r\n\x05to_id\x18\x02 \x01(\t\x12\r\n\x05label\x18\x03 \x01(\t\"+\n\x18GetMindMapForTermRequest\x12\x0f\n\x07term_id\x18\x01 \x01(\t\"W\n\x19GetMindMapForTermResponse\x12\x1c\n\x05nodes\x18\x01 \x03(\x0b\x32\r.gateway.Node\x12\x1c\n\x05\x65\x64ges\x18\x02 \x03(\x0b\x32\r.gateway.Edge\"i\n\x16\x41\x64\x64RelationshipRequest\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType\"*\n\x17\x41\x64\x64RelationshipResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xd9\x06\n\x0eGatewayService\x12\x39\n\x07GetTerm\x12\x18.glossary.GetTermRequest\x1a\x14.gateway.TermDetails\x12\x45\n\rGetTermByName\x12\x1e.glossary.GetTermByNameRequest\x1a\x14.gateway.TermDetails\x12I\n\x0bSearchTerms\x12\x1c.glossary.SearchTermsRequest\x1a\x1c.gateway.SearchTermsResponse\x12Z\n\x11GetMindMapForTerm\x12!.gateway.GetMindMapForTermRequest\x1a\".gateway.GetMindMapForTermResponse\x12\x33\n\x07\x41\x64\x64Term\x12\x18.glossary.AddTermRequest\x1a\x0e.glossary.Term\x12J\n\x0bGetAllTerms\x12\x1c.glossary.GetAllTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12\x39\n\nUpdateTerm\x12\x1b.glossary.UpdateTermRequest\x1a\x0e.glossary.Term\x12G\n\nDeleteTerm\x12\x1b.glossary.DeleteTermRequest\x1a\x1c.glossary.DeleteTermResponse\x12T\n\x0f\x41\x64\x64Relationship\x12\x1f.gateway.AddRelationshipRequest\x1a .gateway.AddRelationshipResponse\x12h\n\x17GetRelationshipsForTerm\x12%.graph.GetRelationshipsForTermRequest\x1a&.graph.GetRelationshipsForTermResponse\x12Y\n\x12\x44\x65leteRelationship\x12 .graph.DeleteRelationshipRequest\x1a!.graph.DeleteRelationshipResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\rgateway.proto\x12\x07gateway\x1a\x0eglossary.proto\x1a\x0bgraph.proto"\x94\x01\n\x13RelationshipDetails\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType\x12\x16\n\x0e\x66rom_term_name\x18\x04 \x01(\t\x12\x14\n\x0cto_term_name\x18\x05 \x01(\t"`\n\x0bTermDetails\x12\x1c\n\x04term\x18\x01 \x01(\x0b\x32\x0e.glossary.Term\x12\x33\n\rrelationships\x18\x02 \x03(\x0b\x32\x1c.gateway.RelationshipDetails"<\n\x13SearchTermsResponse\x12%\n\x07results\x18\x01 \x03(\x0b\x32\x14.gateway.TermDetails"4\n\x04Node\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ndefinition\x18\x03 \x01(\t"5\n\x04\x45\x64ge\x12\x0f\n\x07\x66rom_id\x18\x01 \x01(\t\x12\r\n\x05to_id\x18\x02 \x01(\t\x12\r\n\x05label\x18\x03 \x01(\t"+\n\x18GetMindMapForTermRequest\x12\x0f\n\x07term_id\x18\x01 \x01(\t"W\n\x19GetMindMapForTermResponse\x12\x1c\n\x05nodes\x18\x01 \x03(\x0b\x32\r.gateway.Node\x12\x1c\n\x05\x65\x64ges\x18\x02 \x03(\x0b\x32\r.gateway.Edge"i\n\x16\x41\x64\x64RelationshipRequest\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType"*\n\x17\x41\x64\x64RelationshipResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08"l\n\x19\x44\x65leteRelationshipRequest\x12\x14\n\x0c\x66rom_term_id\x18\x01 \x01(\t\x12\x12\n\nto_term_id\x18\x02 \x01(\t\x12%\n\x04type\x18\x03 \x01(\x0e\x32\x17.graph.RelationshipType"-\n\x1a\x44\x65leteRelationshipResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xd9\x06\n\x0eGatewayService\x12\x39\n\x07GetTerm\x12\x18.glossary.GetTermRequest\x1a\x14.gateway.TermDetails\x12\x45\n\rGetTermByName\x12\x1e.glossary.GetTermByNameRequest\x1a\x14.gateway.TermDetails\x12I\n\x0bSearchTerms\x12\x1c.glossary.SearchTermsRequest\x1a\x1c.gateway.SearchTermsResponse\x12Z\n\x11GetMindMapForTerm\x12!.gateway.GetMindMapForTermRequest\x1a".gateway.GetMindMapForTermResponse\x12\x33\n\x07\x41\x64\x64Term\x12\x18.glossary.AddTermRequest\x1a\x0e.glossary.Term\x12J\n\x0bGetAllTerms\x12\x1c.glossary.GetAllTermsRequest\x1a\x1d.glossary.GetAllTermsResponse\x12\x39\n\nUpdateTerm\x12\x1b.glossary.UpdateTermRequest\x1a\x0e.glossary.Term\x12G\n\nDeleteTerm\x12\x1b.glossary.DeleteTermRequest\x1a\x1c.glossary.DeleteTermResponse\x12T\n\x0f\x41\x64\x64Relationship\x12\x1f.gateway.AddRelationshipRequest\x1a .gateway.AddRelationshipResponse\x12h\n\x17GetRelationshipsForTerm\x12%.graph.GetRelationshipsForTermRequest\x1a&.graph.GetRelationshipsForTermResponse\x12Y\n\x12\x44\x65leteRelationship\x12 .graph.DeleteRelationshipRequest\x1a!.graph.DeleteRelationshipResponseb\x06proto3'
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'gateway_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "gateway_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
-  DESCRIPTOR._options = None
-  _globals['_TERMDETAILS']._serialized_start=55
-  _globals['_TERMDETAILS']._serialized_end=142
-  _globals['_SEARCHTERMSRESPONSE']._serialized_start=144
-  _globals['_SEARCHTERMSRESPONSE']._serialized_end=204
-  _globals['_NODE']._serialized_start=206
-  _globals['_NODE']._serialized_end=258
-  _globals['_EDGE']._serialized_start=260
-  _globals['_EDGE']._serialized_end=313
-  _globals['_GETMINDMAPFORTERMREQUEST']._serialized_start=315
-  _globals['_GETMINDMAPFORTERMREQUEST']._serialized_end=358
-  _globals['_GETMINDMAPFORTERMRESPONSE']._serialized_start=360
-  _globals['_GETMINDMAPFORTERMRESPONSE']._serialized_end=447
-  _globals['_ADDRELATIONSHIPREQUEST']._serialized_start=449
-  _globals['_ADDRELATIONSHIPREQUEST']._serialized_end=554
-  _globals['_ADDRELATIONSHIPRESPONSE']._serialized_start=556
-  _globals['_ADDRELATIONSHIPRESPONSE']._serialized_end=598
-  _globals['_GATEWAYSERVICE']._serialized_start=601
-  _globals['_GATEWAYSERVICE']._serialized_end=1458
+    DESCRIPTOR._options = None
+    _globals["_RELATIONSHIPDETAILS"]._serialized_start = 56
+    _globals["_RELATIONSHIPDETAILS"]._serialized_end = 204
+    _globals["_TERMDETAILS"]._serialized_start = 206
+    _globals["_TERMDETAILS"]._serialized_end = 302
+    _globals["_SEARCHTERMSRESPONSE"]._serialized_start = 304
+    _globals["_SEARCHTERMSRESPONSE"]._serialized_end = 364
+    _globals["_NODE"]._serialized_start = 366
+    _globals["_NODE"]._serialized_end = 418
+    _globals["_EDGE"]._serialized_start = 420
+    _globals["_EDGE"]._serialized_end = 473
+    _globals["_GETMINDMAPFORTERMREQUEST"]._serialized_start = 475
+    _globals["_GETMINDMAPFORTERMREQUEST"]._serialized_end = 518
+    _globals["_GETMINDMAPFORTERMRESPONSE"]._serialized_start = 520
+    _globals["_GETMINDMAPFORTERMRESPONSE"]._serialized_end = 607
+    _globals["_ADDRELATIONSHIPREQUEST"]._serialized_start = 609
+    _globals["_ADDRELATIONSHIPREQUEST"]._serialized_end = 714
+    _globals["_ADDRELATIONSHIPRESPONSE"]._serialized_start = 716
+    _globals["_ADDRELATIONSHIPRESPONSE"]._serialized_end = 758
+    _globals["_DELETERELATIONSHIPREQUEST"]._serialized_start = 760
+    _globals["_DELETERELATIONSHIPREQUEST"]._serialized_end = 868
+    _globals["_DELETERELATIONSHIPRESPONSE"]._serialized_start = 870
+    _globals["_DELETERELATIONSHIPRESPONSE"]._serialized_end = 915
+    _globals["_GATEWAYSERVICE"]._serialized_start = 918
+    _globals["_GATEWAYSERVICE"]._serialized_end = 1775
 # @@protoc_insertion_point(module_scope)
