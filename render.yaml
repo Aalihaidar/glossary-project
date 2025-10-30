@@ -2,43 +2,55 @@ version: "1"
 
 services:
   # ----------------- API Gateway (Public Web Service) -----------------
+  # This is the only public-facing service. It receives external traffic
+  # and forwards requests to the internal gRPC services.
   - type: web
     name: api-gateway
     plan: free
     runtime: docker
     dockerfilePath: ./api-gateway/Dockerfile
+    # The build command is run from the repository root.
     buildCommand: "pip install grpcio==1.60.0 grpcio-tools==1.60.0 protobuf==4.25.3 && ./scripts/generate_proto.sh"
+    # Render will check this path on the PORT to ensure the service is healthy.
     healthCheckPath: /healthz
     envVars:
+      # The port Render exposes to the public and uses for health checks.
       - key: PORT
         value: 10000
-      # --- KEY CHANGE ---
-      # We no longer use 'fromService' because we need to specify the internal port.
-      # Render's DNS will resolve 'glossary-service' to the right container,
-      # and we connect to our custom gRPC port.
+      # These variables point to the internal DNS names and DEDICATED gRPC ports
+      # of the backend services, not their health check ports.
       - key: GLOSSARY_SERVICE_ADDR
         value: "glossary-service:50051"
       - key: GRAPH_SERVICE_ADDR
         value: "graph-service:50052"
+      # Ensures Python logging output appears in real-time.
       - key: PYTHONUNBUFFERED
         value: 1
 
-  # ----------------- Glossary Service (Web Service) -----------------
+  # ----------------- Glossary Service (Internal Web Service) -----------------
+  # Deployed as a 'web' service to comply with Render's free tier. It is not
+  # directly accessible from the internet.
   - type: web
     name: glossary-service
     plan: free
     runtime: docker
     dockerfilePath: ./glossary-service/Dockerfile
+    # The health check path must match the one implemented in the run.py script.
     healthCheckPath: /healthz
     envVars:
+      # IMPORTANT: This port is ONLY for Render's health check. The application
+      # code reads this and starts an HTTP server on it. The main gRPC service
+      # ignores this and uses its own internal port (50051).
       - key: PORT
-        value: 10000 # This port is used by Render's load balancer and is IGNORED by our gRPC code
+        value: 10000
       - key: DATABASE_PATH
         value: /tmp/glossary.db
       - key: PYTHONUNBUFFERED
         value: 1
 
-  # ----------------- Graph Service (Web Service) -----------------
+  # ----------------- Graph Service (Internal Web Service) -----------------
+  # Also deployed as a 'web' service. It communicates with other services
+  # on the private network.
   - type: web
     name: graph-service
     plan: free
@@ -46,8 +58,10 @@ services:
     dockerfilePath: ./graph-service/Dockerfile
     healthCheckPath: /healthz
     envVars:
+      # IMPORTANT: This port is ONLY for Render's health check. The main
+      # gRPC service ignores this and runs on its own internal port (50052).
       - key: PORT
-        value: 10000 # This port is used by Render's load balancer and is IGNORED by our gRPC code
+        value: 10000
       - key: DATABASE_PATH
         value: /tmp/graph.db
       - key: PYTHONUNBUFFERED
