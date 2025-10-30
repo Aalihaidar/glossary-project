@@ -7,7 +7,6 @@ services:
     plan: free
     runtime: docker
     dockerfilePath: ./api-gateway/Dockerfile
-    # This command runs in the root of your repo BEFORE the docker build starts.
     buildCommand: "pip install grpcio==1.60.0 grpcio-tools==1.60.0 protobuf==4.25.3 && ./scripts/generate_proto.sh"
     healthCheckPath: /healthz
     envVars:
@@ -15,40 +14,42 @@ services:
         value: 10000
       - key: GLOSSARY_SERVICE_ADDR
         fromService:
-          type: pserv
+          type: web
           name: glossary-service
           property: hostport
       - key: GRAPH_SERVICE_ADDR
         fromService:
-          type: pserv
+          type: web
           name: graph-service
           property: hostport
       - key: PYTHONUNBUFFERED
         value: 1
 
-  # ----------------- Glossary Service (Private Service) -----------------
-  - type: pserv
+  # ----------------- Glossary Service (NOW A Web Service) -----------------
+  - type: web
     name: glossary-service
     plan: free
     runtime: docker
     dockerfilePath: ./glossary-service/Dockerfile
+    healthCheckPath: /healthz
     envVars:
       - key: PORT
-        value: 50051
+        value: 10000
       - key: DATABASE_PATH
         value: /tmp/glossary.db
       - key: PYTHONUNBUFFERED
         value: 1
 
-  # ----------------- Graph Service (Private Service) -----------------
-  - type: pserv
+  # ----------------- Graph Service (NOW A Web Service) -----------------
+  - type: web
     name: graph-service
     plan: free
     runtime: docker
     dockerfilePath: ./graph-service/Dockerfile
+    healthCheckPath: /healthz
     envVars:
       - key: PORT
-        value: 50052
+        value: 10000
       - key: DATABASE_PATH
         value: /tmp/graph.db
       - key: PYTHONUNBUFFERED
