@@ -29,25 +29,27 @@ def handle_rpc_error(e: grpc.RpcError, context):
     return None
 
 
-# --- KEY CHANGE: New Helper Function for Resilient Connections ---
 def wait_for_channel_ready(address: str, service_name: str) -> grpc.Channel:
     """
     Waits for a gRPC channel to be ready, retrying if necessary.
-
-    This is crucial for service startup in an orchestrated environment where
-    downstream services may not be immediately available due to DNS propagation
-    or container startup times.
+    This version creates a SECURE channel, suitable for communicating with
+    public-facing services that have TLS enabled.
     """
     logging.info(f"Attempting to connect to {service_name} at {address}...")
-    max_retries = 12  # Try for up to 2 minutes (12 * 10s)
+    max_retries = 12
     retry_delay_seconds = 10
     attempt = 0
 
     while attempt < max_retries:
         try:
             attempt += 1
-            channel = grpc.insecure_channel(address)
-            # Use a short timeout to quickly check for connectivity.
+            # --- THE FINAL KEY CHANGE ---
+            # Use grpc.secure_channel because we are connecting to a public
+            # Render URL, which has TLS encryption managed automatically.
+            # grpc.ssl_channel_credentials() uses the system's default CA certs.
+            credentials = grpc.ssl_channel_credentials()
+            channel = grpc.secure_channel(address, credentials)
+
             grpc.channel_ready_future(channel).result(timeout=5)
             logging.info(f"Successfully connected to {service_name}.")
             return channel
@@ -56,14 +58,10 @@ def wait_for_channel_ready(address: str, service_name: str) -> grpc.Channel:
                 f"Connection to {service_name} timed out on attempt {attempt}/{max_retries}. "
                 f"Retrying in {retry_delay_seconds} seconds..."
             )
-            # Close the broken channel before retrying
             if channel:
                 channel.close()
             time.sleep(retry_delay_seconds)
 
-    # If the loop completes without a successful connection, raise an exception.
-    # This will cause the gateway to fail its deployment, which is the correct
-    # "fail-fast" behavior if it cannot connect to critical dependencies.
     raise RuntimeError(
         f"Could not connect to {service_name} at {address} after {max_retries} attempts."
     )
@@ -79,9 +77,6 @@ class GatewayServer(gateway_pb2_grpc.GatewayServiceServicer):
         Initializes the GatewayServer and establishes RESILIENT connections to
         downstream services, waiting for them to be ready.
         """
-        # --- KEY CHANGE: Use the helper to wait for services to be ready ---
-        # The gateway will now block on startup until it can connect. This
-        # solves the DNS propagation and race condition issues permanently.
         self.glossary_channel = wait_for_channel_ready(
             glossary_addr, "Glossary Service"
         )
@@ -93,8 +88,7 @@ class GatewayServer(gateway_pb2_grpc.GatewayServiceServicer):
         self.graph_stub = graph_pb2_grpc.GraphServiceStub(self.graph_channel)
         logging.info("API Gateway initialized. All downstream services are connected.")
 
-    # ... The rest of the class methods (_get_term_lookup, GetTerm, AddTerm, etc.)
-    # ... remain exactly the same as before.
+    # ... The rest of the class methods remain unchanged ...
 
     def _get_term_lookup(self, term_ids: Set[str]) -> Dict[str, glossary_pb2.Term]:
         """
