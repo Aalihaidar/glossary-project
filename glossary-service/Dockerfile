@@ -1,29 +1,40 @@
-# Stage 1: Use Python 3.11, a stable version with pre-compiled wheels.
+# Stage 1: Builder Stage
+# Use a slim Python base image to build dependencies. Using a specific version
+# like 3.11 ensures consistency.
 FROM python:3.11-slim as builder
 
+# Set the working directory for the build process.
 WORKDIR /app
 
-# Copy only the requirements file from its specific directory
-COPY graph-service/requirements.txt .
+# --- KEY CHANGE ---
+# Copy the requirements file specifically from the glossary-service directory.
+COPY glossary-service/requirements.txt .
 
-# Install dependencies.
+# Install dependencies into the builder stage. Using --no-cache-dir reduces
+# the size of this layer.
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-# Stage 2: Final stage for the application
+# Stage 2: Final Application Stage
+# Start from a fresh slim image to keep the final container lightweight.
 FROM python:3.11-slim
 
-# Set the working directory
+# Set the working directory for the application.
 WORKDIR /app
 
-# Copy the installed dependencies from the builder stage
+# Copy the pre-installed Python packages from the builder stage. This is more
+# efficient than reinstalling them.
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 
-# Copy all the application code from the service's directory into the container
-COPY graph-service/ /app/
+# --- KEY CHANGE ---
+# Copy the application code from the correct glossary-service directory.
+# This includes the run.py, the 'glossary' module, and any other necessary files.
+COPY glossary-service/ /app/
 
-# The port will be set by Render's PORT environment variable
+# Expose the port that Render will use for health checks. This is good practice
+# for documentation and container orchestration.
 EXPOSE 10000
 
-# The command to run when the container starts
+# Define the command to run the application. This starts the run.py script
+# which in turn starts both the gRPC server and the health check server.
 CMD ["python", "run.py"]
