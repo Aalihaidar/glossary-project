@@ -13,6 +13,7 @@ from graph.database import init_db  # noqa: E402
 from proto.graph_pb2_grpc import add_GraphServiceServicer_to_server  # noqa: E402
 
 
+# --- Health Check Handler ---
 class HealthCheckHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/healthz":
@@ -30,11 +31,16 @@ class HealthCheckHandler(BaseHTTPRequestHandler):
 
 def start_health_check_server(port=8080):
     """Runs a simple HTTP server in a background thread for health checks."""
-    with HTTPServer(("", port), HealthCheckHandler) as httpd:
-        thread = threading.Thread(target=httpd.serve_forever)
-        thread.daemon = True
-        thread.start()
-        logging.info(f"Health check server started on port {port}")
+    # DO NOT use a 'with' statement here, as it will close the server
+    # when the function returns.
+    httpd = HTTPServer(("", port), HealthCheckHandler)
+    thread = threading.Thread(target=httpd.serve_forever)
+    thread.daemon = True
+    thread.start()
+    logging.info(f"Health check server started on port {port}")
+
+
+# --- End Health Check ---
 
 
 def serve():
@@ -42,7 +48,7 @@ def serve():
     start_health_check_server()
 
     port = os.environ.get("PORT", "50052")
-    db_path = os.environ.get("DATABASE_PATH", "data/graph.db")
+    db_path = os.environ.get("DATABASE_PATH", "/tmp/graph.db")  # Corrected path
 
     init_db(db_path)
 
@@ -51,7 +57,7 @@ def serve():
 
     server.add_insecure_port(f"[::]:{port}")
     server.start()
-    logging.info(f"Graph Service started on port {port}")
+    logging.info(f"Graph Service gRPC server started on port {port}")
     server.wait_for_termination()
 
 
