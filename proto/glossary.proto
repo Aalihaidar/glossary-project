@@ -16,7 +16,6 @@ message Term {
   string id = 1;
   string name = 2;
   string definition = 3;
-  repeated Term related_terms = 4;
 }
 
 message AddTermRequest {

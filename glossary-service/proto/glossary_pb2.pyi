@@ -1,33 +1,19 @@
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import (
-    ClassVar as _ClassVar,
-    Iterable as _Iterable,
-    Mapping as _Mapping,
-    Optional as _Optional,
-    Union as _Union,
-)
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Term(_message.Message):
-    __slots__ = ("id", "name", "definition", "related_terms")
+    __slots__ = ("id", "name", "definition")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     DEFINITION_FIELD_NUMBER: _ClassVar[int]
-    RELATED_TERMS_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     definition: str
-    related_terms: _containers.RepeatedCompositeFieldContainer[Term]
-    def __init__(
-        self,
-        id: _Optional[str] = ...,
-        name: _Optional[str] = ...,
-        definition: _Optional[str] = ...,
-        related_terms: _Optional[_Iterable[_Union[Term, _Mapping]]] = ...,
-    ) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., definition: _Optional[str] = ...) -> None: ...
 
 class AddTermRequest(_message.Message):
     __slots__ = ("name", "definition")
@@ -35,9 +21,7 @@ class AddTermRequest(_message.Message):
     DEFINITION_FIELD_NUMBER: _ClassVar[int]
     name: str
     definition: str
-    def __init__(
-        self, name: _Optional[str] = ..., definition: _Optional[str] = ...
-    ) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., definition: _Optional[str] = ...) -> None: ...
 
 class UpdateTermRequest(_message.Message):
     __slots__ = ("id", "name", "definition")
@@ -47,12 +31,7 @@ class UpdateTermRequest(_message.Message):
     id: str
     name: str
     definition: str
-    def __init__(
-        self,
-        id: _Optional[str] = ...,
-        name: _Optional[str] = ...,
-        definition: _Optional[str] = ...,
-    ) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., definition: _Optional[str] = ...) -> None: ...
 
 class GetTermRequest(_message.Message):
     __slots__ = ("id",)
@@ -80,9 +59,7 @@ class GetAllTermsResponse(_message.Message):
     __slots__ = ("terms",)
     TERMS_FIELD_NUMBER: _ClassVar[int]
     terms: _containers.RepeatedCompositeFieldContainer[Term]
-    def __init__(
-        self, terms: _Optional[_Iterable[_Union[Term, _Mapping]]] = ...
-    ) -> None: ...
+    def __init__(self, terms: _Optional[_Iterable[_Union[Term, _Mapping]]] = ...) -> None: ...
 
 class DeleteTermRequest(_message.Message):
     __slots__ = ("id",)

@@ -214,13 +214,10 @@ class GatewayServer(gateway_pb2_grpc.GatewayServiceServicer):
     def GetRelationshipsForTerm(self, request, context):
         logging.info(f"Proxying GetRelationshipsForTerm for ID: {request.term_id}")
         try:
-            graph_response = self.graph_stub.GetRelationshipsForTerm(request)
-            return gateway_pb2.GetRelationshipsForTermResponse(
-                relationships=graph_response.relationships
-            )
+            return self.graph_stub.GetRelationshipsForTerm(request)
         except grpc.RpcError as e:
             handle_rpc_error(e, context)
-            return gateway_pb2.GetRelationshipsForTermResponse()
+            return graph_pb2.GetRelationshipsForTermResponse()
 
     def DeleteRelationship(self, request, context):
         logging.info("Proxying DeleteRelationship request to Graph Service")

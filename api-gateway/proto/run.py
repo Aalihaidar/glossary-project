@@ -17,8 +17,7 @@ from proto.gateway_pb2_grpc import add_GatewayServiceServicer_to_server  # noqa:
 def serve():
     """
     Initializes and starts the gRPC server for the API Gateway,
-    and orchestrates the database seeding process on startup for
-    ephemeral environments like Render.
+    and orchestrates the database seeding process on startup.
     """
     port = os.environ.get("PORT", "50050")
     glossary_addr = os.environ.get("GLOSSARY_SERVICE_ADDR", "localhost:50051")
@@ -36,7 +35,8 @@ def serve():
     logging.info(f"Proxying to Graph Service at {graph_addr}")
 
     def seed_in_background():
-        logging.info("Seeder will start in 2 seconds...")
+        """Runs the seeder in a background thread with robust error logging."""
+        logging.info("Seeding process will start in 2 seconds...")
         time.sleep(2)
         try:
             run_seeder(f"localhost:{port}")

@@ -20,8 +20,20 @@ glossary-project/
 ├── api-gateway/
 │   ├── gateway/
 │   │   ├── __init__.py
+│   │   ├── seeder.py
 │   │   └── server.py
 │   ├── proto/
+│   │   ├── __init__.py
+│   │   ├── gateway_pb2_grpc.py
+│   │   ├── gateway_pb2.py
+│   │   ├── gateway_pb2.pyi
+│   │   ├── glossary_pb2_grpc.py
+│   │   ├── glossary_pb2.py
+│   │   ├── glossary_pb2.pyi
+│   │   ├── graph_pb2_grpc.py
+│   │   ├── graph_pb2.py
+│   │   ├── graph_pb2.pyi
+│   │   └── run.py
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── run.py
@@ -32,6 +44,11 @@ glossary-project/
 │   │   ├── database.py
 │   │   └── service.py
 │   ├── proto/
+│   │   ├── __init__.py
+│   │   ├── glossary_pb2_grpc.py
+│   │   ├── glossary_pb2.py
+│   │   └── glossary_pb2.pyi
+│   │   └── run.py
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── run.py
@@ -42,6 +59,11 @@ glossary-project/
 │   │   ├── database.py
 │   │   └── service.py
 │   ├── proto/
+│   │   ├── __init__.py
+│   │   ├── graph_pb2_grpc.py
+│   │   ├── graph_pb2.py
+│   │   ├── graph_pb2.pyi
+│   │   └── run.py
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── run.py
