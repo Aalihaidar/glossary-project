@@ -1,7 +1,5 @@
 version: "1"
 
-preBuildCommand: "pip install grpcio==1.60.0 grpcio-tools==1.60.0 protobuf==4.25.3 && ./scripts/generate_proto.sh"
-
 services:
   # ----------------- API Gateway (Public Web Service) -----------------
   - type: web
@@ -9,6 +7,8 @@ services:
     plan: free
     runtime: docker
     dockerfilePath: ./api-gateway/Dockerfile
+    # This command runs in the root of your repo BEFORE the docker build starts.
+    buildCommand: "pip install grpcio==1.60.0 grpcio-tools==1.60.0 protobuf==4.25.3 && ./scripts/generate_proto.sh"
     healthCheckPath: /healthz
     envVars:
       - key: PORT
