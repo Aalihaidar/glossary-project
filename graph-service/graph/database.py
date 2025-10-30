@@ -1,44 +1,43 @@
 import logging
-import os
 import sqlite3
 
 
-def get_db_connection(db_path: str) -> sqlite3.Connection:
-    """Establishes a connection to the SQLite database."""
-    conn = sqlite3.connect(db_path)
-    return conn
-
-
-def init_db(db_path: str):
+def create_shared_connection(db_path: str) -> sqlite3.Connection:
     """
-    Initializes the graph database. It creates the relationships table with a
-    professional composite primary key if it doesn't exist. This function is
-    idempotent and safe to run on every application startup.
-
-    Args:
-        db_path: The file path for the SQLite database.
+    Establishes a long-lived, shared connection to the SQLite database.
+    This is the recommended approach for multi-threaded gRPC servers.
     """
-    db_dir = os.path.dirname(db_path)
-    if db_dir:
-        os.makedirs(db_dir, exist_ok=True)
-
     try:
-        with get_db_connection(db_path) as conn:
-            cursor = conn.cursor()
-            logging.info(
-                "Ensuring 'relationships' table exists with the correct schema."
+        # check_same_thread=False allows this single connection to be used
+        # by all threads in the gRPC server's thread pool.
+        conn = sqlite3.connect(db_path, check_same_thread=False)
+        logging.info(f"Successfully created shared database connection to {db_path}")
+        return conn
+    except sqlite3.Error as e:
+        logging.error(f"Failed to create shared database connection: {e}")
+        raise
+
+
+def init_db(conn: sqlite3.Connection):
+    """
+    Initializes the graph database schema using a shared connection.
+    This function is idempotent.
+    """
+    try:
+        cursor = conn.cursor()
+        logging.info("Ensuring 'relationships' table exists with the correct schema.")
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS relationships (
+                from_term_id TEXT NOT NULL,
+                to_term_id TEXT NOT NULL,
+                type INTEGER NOT NULL,
+                PRIMARY KEY (from_term_id, to_term_id, type)
             )
-            cursor.execute(
-                """
-                CREATE TABLE IF NOT EXISTS relationships (
-                    from_term_id TEXT NOT NULL,
-                    to_term_id TEXT NOT NULL,
-                    type INTEGER NOT NULL,
-                    PRIMARY KEY (from_term_id, to_term_id, type)
-                )
-                """
-            )
-            conn.commit()
+            """
+        )
+        conn.commit()
+        logging.info("Graph database schema is up to date.")
     except sqlite3.Error as e:
         logging.error(f"Graph database initialization failed: {e}")
         raise
